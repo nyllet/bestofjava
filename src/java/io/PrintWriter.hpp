@@ -1,0 +1,52 @@
+/* Prints formatted representations of objects to a text-output stream.
+   Copyright (C) 2014 Martin Nylin
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+
+#ifndef PRINT_WRITER
+#define PRINT_WRITER
+
+#include "java/io/OutputStream.hpp"
+#include "java/io/Writer.hpp"
+
+namespace bestofjava {
+
+   class PrintWriter : public Writer {
+   public:
+      PrintWriter(OutputStream*);
+      PrintWriter(const PrintWriter& pw) : myOutputStream(pw.myOutputStream) {};
+      ~PrintWriter();
+      PrintWriter& operator=(const PrintWriter&);
+      void close();
+      void flush();
+      void print(const char*) const;
+      void print(double) const;
+      void print(int) const;
+      void print(long long) const;
+      void print(std::string*) const;
+      void print(const std::string&) const;
+      void print(unsigned int) const;
+      void println(const char*) const;
+      void println(double) const;
+      void println(std::string*) const;
+      void println(const std::string&) const;
+      void write(const char*, int , int);
+
+   private:
+      OutputStream* myOutputStream;
+   };
+
+} // namespace bestofjava
+   
+#endif
