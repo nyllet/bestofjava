@@ -23,7 +23,7 @@ AC_CHECK_HEADERS([sys/time.h unistd.h])
 AC_CHECK_HEADER_STDBOOL
 
 AC_CHECK_LIB(expat, XML_ParserCreate, [], [
-echo "Error! You need libexpat."
+echo "Error! You need libexpat1-dev."
 exit -1             
 ])
 
@@ -31,6 +31,7 @@ exit -1
 AC_FUNC_MKTIME
 AC_CHECK_FUNCS([gettimeofday localtime_r])
 
+LT_PREREQ([2.4.2])
 LT_INIT([disable-static])
 
 AC_CONFIG_FILES([Makefile

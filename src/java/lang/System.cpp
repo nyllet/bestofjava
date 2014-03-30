@@ -14,10 +14,10 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
+#include <sys/time.h>
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <sys/time.h>
 #include "System.hpp"
 
 namespace bestofjava {

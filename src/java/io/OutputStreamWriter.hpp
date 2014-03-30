@@ -27,8 +27,8 @@ namespace bestofjava {
 
    class OutputStreamWriter : public Writer {
    public:
-      OutputStreamWriter() : myOutputStream(nullptr) {};
-      OutputStreamWriter(OutputStream*);
+      OutputStreamWriter() : myOutputStream(nullptr) {}
+      explicit OutputStreamWriter(OutputStream* os);
       virtual void close();
       virtual void flush();
       void setOstream(std::ostream*);

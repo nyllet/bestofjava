@@ -17,17 +17,17 @@
 #ifndef ATTRIBUTES
 #define ATTRIBUTES
 
-#include <string>
 #include <expat.h>
+#include <string>
 
 namespace bestofjava {
    
    class Attributes {
       
    public:
-      Attributes(const XML_Char **);
+      explicit Attributes(const XML_Char **);
       int getLength() const;
-      std::string getQName(int) const;
+      std::string getQName(int index) const;
       
    private:
       const XML_Char** myAtts;

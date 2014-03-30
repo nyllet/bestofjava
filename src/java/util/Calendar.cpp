@@ -108,7 +108,7 @@ namespace bestofjava {
       return -1;
    }
 
-   long long Calendar::getTimeInMillis() {
+   uint64_t Calendar::getTimeInMillis() {
       return myTimeInMillis;
    }
 
@@ -126,7 +126,7 @@ namespace bestofjava {
       myTimeInMillis = theTime * 1000;
    }
    
-   void Calendar::setTimeInMillis(long long millis) {
+   void Calendar::setTimeInMillis(uint64_t millis) {
       myTimeInMillis = millis;
    }
 

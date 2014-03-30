@@ -40,9 +40,9 @@ namespace bestofjava {
       virtual void endElement(const std::string& uri, const std::string& localname,const std::string&   qname) = 0;
       static void startElement_callback(DefaultHandler*,const std::string&,const std::string&,const std::string& , const Attributes&);
       static void endElement_callback(DefaultHandler*,const std::string&,const std::string&,const std::string&);
-      static void characters_callback(DefaultHandler*,const std::string&);
-      static void startDocument_callback(DefaultHandler*);
-      static void endDocument_callback(DefaultHandler*);
+      static void characters_callback(DefaultHandler*,const std::string& characters);
+      static void startDocument_callback(DefaultHandler* dh);
+      static void endDocument_callback(DefaultHandler* dh);
    };
 
 } // namespace bestofjava

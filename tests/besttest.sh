@@ -2,27 +2,11 @@
 
 return_value=0
 logdir="/tmp/bestofjava"
-mkdir $logdir
-g++ -v >/dev/null 2>&1 || { echo >&2 "you need g++, but it's not installed. bailing out"; exit 1; }
-
-bestofjavalib=`find /usr -name libbestofjava.so`
-if [ "x$bestofjavalib" == "x" ]; then
-    echo >&2 "you need to build the bestofjava shared library before running this test. it's as simple as cd .. && make"
+if ! mkdir $logdir; then
+    echo "failed to create directory $logdir. bailing out"
     exit 1
 fi
 
-expatlib=`find /usr -name libexpat.so`
-if [ "x$expatlib" == "x" ]; then
-    echo >&2 "you need to install the expat shared library before running this test. on debian gnu/linux it's as simple as sudo apt-get install libexpat1-dev"
-    exit 1
-fi
-
-g++ -g ${srcdir}/SimpleTester.cpp -lbestofjava -lexpat
-
-if [ $? -ne 0 ]; then
-    echo "failed to compile SimpleTester.cpp. maybe your library path is not correctly setup? or could it be that libexpat1 is not installed?"
-    exit 1
-fi
 
 xmlFile=`find /usr -name '*.xml' -printf "%k %p\n" | sort -n | tail -1 | awk '{ print $2 }'`
 valgrind --version >/dev/null 2>&1 || { echo >&2 "you need valgrind, but it's not installed. bailing out"; exit 1; }
@@ -34,7 +18,7 @@ java -version >/dev/null 2>&1 || { echo >&2 "you need a java compiler, but it's 
 javaLogFile="${logdir}/javatest.txt"
 java -classpath $logdir SimpleTester $xmlFile > $javaLogFile &
 
-valgrind ./a.out $xmlFile > $cppLogFile 2> "${logdir}/valgrind.txt" 
+valgrind ./simple_tester $xmlFile > $cppLogFile 2> "${logdir}/valgrind.txt"
 
 while [ ! -f $javaLogFile ]
 do
@@ -44,13 +28,13 @@ done
 
 leaks=`grep 'All heap blocks were freed -- no leaks are possible' ${logdir}/valgrind.txt | wc -l`
 
-if [ "$leaks" -ne 1 ]; then
+if [ "$leaks" -eq 0 ]; then
     echo "you have memory leaks!"
     return_value=3
 fi
 
 valgrindErrors=`grep 'ERROR SUMMARY: 0 errors from 0 contexts' ${logdir}/valgrind.txt | wc -l`
-if [ "$valgrindErrors" -ne 1 ]; then
+if [ "$valgrindErrors" -eq 0 ]; then
     echo "valgrind reports errors"
     return_value=2
 fi

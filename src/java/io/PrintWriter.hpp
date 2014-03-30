@@ -17,6 +17,7 @@
 #ifndef PRINT_WRITER
 #define PRINT_WRITER
 
+#include <string>
 #include "java/io/OutputStream.hpp"
 #include "java/io/Writer.hpp"
 
@@ -24,21 +25,21 @@ namespace bestofjava {
 
    class PrintWriter : public Writer {
    public:
-      PrintWriter(OutputStream*);
-      PrintWriter(const PrintWriter& pw) : myOutputStream(pw.myOutputStream) {};
+      explicit PrintWriter(OutputStream* os);
+      PrintWriter(const PrintWriter& pw) : myOutputStream(pw.myOutputStream) {}
       ~PrintWriter();
       PrintWriter& operator=(const PrintWriter&);
       void close();
       void flush();
       void print(const char*) const;
-      void print(double) const;
-      void print(int) const;
+      void print(double d) const;
+      void print(int i) const;
       void print(long long) const;
-      void print(std::string*) const;
+      void print(std::string* s) const;
       void print(const std::string&) const;
       void print(unsigned int) const;
       void println(const char*) const;
-      void println(double) const;
+      void println(double d) const;
       void println(std::string*) const;
       void println(const std::string&) const;
       void write(const char*, int , int);

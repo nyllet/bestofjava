@@ -31,7 +31,6 @@ libbestofjava_la_LDFLAGS = -version-info 0:0:0
 dist_noinst_SCRIPTS = autogen.sh
 
 EXTRA_DIST = 	tests/besttest.sh \
-		tests/static_checks.sh \
 		tests/SimpleTester.cpp \
 		tests/SimpleTester.hpp \
 		tests/SimpleTester.java

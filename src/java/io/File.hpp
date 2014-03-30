@@ -1,4 +1,4 @@
-/* An abstract representation of file and directory pathnames. 
+/* An abstract representation of file and directory pathnames.
    Copyright (C) 2014 Martin Nylin
 
    This program is free software: you can redistribute it and/or modify
@@ -21,18 +21,18 @@
 namespace bestofjava {
 
    class File {
-      
+
    public:
-      File(const std::string&);
+      explicit File(const std::string&);
       ~File();
       std::string getName() const;
       bool exists() const;
       bool isDirectory();
       long long lastModified();
-      
+
    private:
       std::string myPathName;
-      
+
    };
 
 } // namespace bestofjava

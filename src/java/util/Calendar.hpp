@@ -19,6 +19,7 @@
 #ifndef CALENDAR
 #define CALENDAR
 
+#include <cstdint>
 #include <cstdlib>
 #include <ctime>
 #include "java/lang/System.hpp"
@@ -36,13 +37,13 @@ namespace bestofjava {
       bool after(Calendar when);
       bool before(Calendar when);
       int compareTo(Calendar anotherCalendar);
-      int get(int);
-      long long	getTimeInMillis();
+      int get(int i);
+      uint64_t getTimeInMillis();
       void set(int year, int month, int date);
-      void setTimeInMillis(long long);
+      void setTimeInMillis(uint64_t);
       
    private:
-      long long myTimeInMillis;
+      uint64_t myTimeInMillis;
    };
 
 } // namespace bestofjava

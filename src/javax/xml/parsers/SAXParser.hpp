@@ -17,6 +17,7 @@
 #ifndef SAXPARSER_H
 #define SAXPARSER_H
 
+#include <string>
 #include "org/xml/sax/helpers/DefaultHandler.hpp"
 #include "java/io/File.hpp"
 
