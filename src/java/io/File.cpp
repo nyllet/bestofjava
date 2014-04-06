@@ -32,12 +32,29 @@ namespace bestofjava {
       if (stat(myPathName.c_str(), &filestat )) return false; //error during stat
       return true;
    }
+
+   std::string File::getAbsolutePath() const {
+      if (myPathName.at(0) == '/') return myPathName;
+      char buf[128];
+      return std::string(getcwd(buf,128)).append("/").append(myPathName);
+   }
    
    std::string File::getName() const {
-      return myPathName;
+      size_t lastSlash = myPathName.find_last_of('/');
+      if (lastSlash == std::string::npos) return myPathName;
+      return myPathName.substr(lastSlash + 1);
    }
 
-   bool File::isDirectory() {
+   std::string File::getParent() const {
+      size_t lastSlash = myPathName.find_last_of('/');
+      if (lastSlash != std::string::npos) 
+         return myPathName.substr(0,lastSlash);
+      char buf[128];
+      return std::string(getcwd(buf,128));
+
+   }
+
+   bool File::isDirectory() const {
       struct stat filestat;
       if (stat(myPathName.c_str(), &filestat )) return false; //error during stat
       if (S_ISDIR( filestat.st_mode )) return true;
@@ -53,10 +70,10 @@ namespace bestofjava {
     *       since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if
     *       an I/O error occurs
     */
-   long long File::lastModified() {
+   int64_t File::lastModified() {
       struct stat64 attrib;			// create a file attribute structure
       stat64(myPathName.c_str(), &attrib);		// get the attributes of afile.txt
-      return (static_cast<long long>(1000))*attrib.st_mtime;
+      return (static_cast<int64_t>(1000))*attrib.st_mtime;
    }
 
 } // namespace bestofjava

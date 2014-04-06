@@ -23,6 +23,8 @@
 #include "javax/xml/parsers/SAXParserFactory.hpp"
 #include "java/io/PrintWriter.hpp"
 #include "java/lang/System.hpp"
+#include "java/util/Calendar.hpp"
+
 /*
  * When the parser encounters plain text (not XML elements),
  * it calls(this method, which accumulates them in a string buffer
@@ -77,7 +79,32 @@ int main(int argc, char **argv) {
    //Finally, tell the parser to parse the input and notify the handler
    bestofjava::File myFile(argv[1]);
    sp.parse(myFile, handler);
-   std::cout << myFile.getName() << " was last modified " << myFile.lastModified() << std::endl;
+   std::cout << myFile.getAbsolutePath() << " was last modified " << myFile.lastModified() << std::endl;
+   bestofjava::Calendar fileCalendar;
+   fileCalendar.setTimeInMillis(myFile.lastModified());
+   std::cout << "which means year: " << fileCalendar.get(bestofjava::Calendar::YEAR) << ", month: " << fileCalendar.get(bestofjava::Calendar::MONTH) << ", date: " << fileCalendar.get(bestofjava::Calendar::DAY_OF_MONTH) << ", hour: " << fileCalendar.get(bestofjava::Calendar::HOUR_OF_DAY) << ", minute: " << fileCalendar.get(bestofjava::Calendar::MINUTE) << ", second: " << fileCalendar.get(bestofjava::Calendar::SECOND) << std::endl;
+   bestofjava::Calendar oldCal,newCal;
+   if (myFile.exists()) std::cout << "oh yes, " << myFile.getName() << " exists" << std::endl;
+   else std::cout << "crap, " << myFile.getName() << " does not exist" << std::endl;
+   std::cout << "the absolute path is " << myFile.getAbsolutePath() << std::endl;
+   std::cout << "the parent dir is " + myFile.getParent() << std::endl;
+   bestofjava::File parentDir(myFile.getParent());
+   if (parentDir.isDirectory()) std::cout << parentDir.getAbsolutePath() << " is a directory" << std::endl;
+   else std::cout << parentDir.getAbsolutePath() << " is not a directory" << std::endl;
+   oldCal.setTimeInMillis(myFile.lastModified());
+   newCal.setTimeInMillis(bestofjava::System::currentTimeMillis());
+   if (oldCal.after(newCal)) std::cout << "oups, " << oldCal.getTimeInMillis() << " is after " << newCal.getTimeInMillis() << std::endl;
+   if (newCal.before(oldCal)) std::cout << "oups, " << newCal.getTimeInMillis() << " is before " << oldCal.getTimeInMillis() << std::endl;
+   // bestofjava::Calendar getset;
+   // int year=2014, month=4, day_of_month=5;
+   // getset.set(year, month, day_of_month);
+   // std::cout << "2014-04-05 in millis: " << getset.getTimeInMillis() << std::endl;
+   // std::cout << "year: " << getset.get(bestofjava::Calendar::YEAR) << ", month: " << getset.get(bestofjava::Calendar::MONTH) << ", date: " << getset.get(bestofjava::Calendar::DAY_OF_MONTH) << ", hour: " << getset.get(bestofjava::Calendar::HOUR_OF_DAY) << ", minute: " << getset.get(bestofjava::Calendar::MINUTE) << ", second: " << getset.get(bestofjava::Calendar::SECOND) << std::endl;
+   // getset.setTimeInMillis(getset.getTimeInMillis());
+   // std::cout << "after calendar time is reset in millis: year: " << getset.get(bestofjava::Calendar::YEAR) << ", month: " << getset.get(bestofjava::Calendar::MONTH) << ", date: " << getset.get(bestofjava::Calendar::DAY_OF_MONTH) << ", hour: " << getset.get(bestofjava::Calendar::HOUR_OF_DAY) << ", minute: " << getset.get(bestofjava::Calendar::MINUTE) << ", second: " << getset.get(bestofjava::Calendar::SECOND) << std::endl;
+   
+   
+   
 }
 
 

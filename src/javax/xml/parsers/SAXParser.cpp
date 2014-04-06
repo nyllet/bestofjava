@@ -66,9 +66,9 @@ namespace bestofjava {
    void SAXParser::parse(const File& xmlfile, DefaultHandler& dh) {
       ctxt.dh = &dh;
       FILE *docfd;
-      docfd = fopen(xmlfile.getName().c_str(), "r");
+      docfd = fopen(xmlfile.getAbsolutePath().c_str(), "r");
       if (docfd == nullptr) {
-         std::cerr << "SAXParser::parse failed to open " << xmlfile.getName() << " for parsing." << std::endl;
+         std::cerr << "SAXParser::parse failed to open " << xmlfile.getAbsolutePath() << " for parsing." << std::endl;
          return;
       }
       int BUFF_SIZE = 255;
@@ -100,20 +100,20 @@ namespace bestofjava {
          void* buff = XML_GetBuffer(parser, BUFF_SIZE);
 
          if (buff == nullptr) {
-            std::cerr << "SAXParser::parse error says XML_GetBuffer returned nullptr while parsing " << xmlfile.getName() << ", error = " << XML_GetErrorCode(parser) << ". meaning " << XML_ErrorString(XML_GetErrorCode(parser)) << std::endl;           
+            std::cerr << "SAXParser::parse error says XML_GetBuffer returned nullptr while parsing " << xmlfile.getAbsolutePath() << ", error = " << XML_GetErrorCode(parser) << ". meaning " << XML_ErrorString(XML_GetErrorCode(parser)) << std::endl;           
              success = false;
              break;
          } 
          
          bytes_read = static_cast<int>(fread(buff, 1, BUFF_SIZE, docfd));
          if (bytes_read < 0) {
-            std::cerr << "SAXParser::parse error says fread failed while parsing " << xmlfile.getName() << std::endl;
+            std::cerr << "SAXParser::parse error says fread failed while parsing " << xmlfile.getAbsolutePath() << std::endl;
             success = false;
             break;
          }
       
          if (! XML_ParseBuffer(parser, bytes_read, bytes_read == 0)) {
-            std::cerr << "SAXParser::parse error says XML_ParseBuffer failed while parsing " << xmlfile.getName() << std::endl;
+            std::cerr << "SAXParser::parse error says XML_ParseBuffer failed while parsing " << xmlfile.getAbsolutePath() << std::endl;
             success = false;
             break;
          }

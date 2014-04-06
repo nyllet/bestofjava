@@ -40,9 +40,10 @@ if [ "$valgrindErrors" -eq 0 ]; then
 fi
 
 
-difference=`diff $cppLogFile $javaLogFile`
-if [ "$return_value" -eq 0 ]; then
-    return_value=$difference
+my_diff=`diff $cppLogFile $javaLogFile`
+if [ "$?" -ne 0 ]; then
+    echo "the difference between $cppLogFile and $javaLogFile is $my_diff"
+    return_value=5
 fi
 
 cppTime=`cat ${logdir}/cpp_time.txt`

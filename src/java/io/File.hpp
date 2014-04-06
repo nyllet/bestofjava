@@ -16,6 +16,7 @@
 #ifndef FILE_H
 #define FILE_H
 
+#include <cstdint>
 #include <string>
 
 namespace bestofjava {
@@ -25,10 +26,12 @@ namespace bestofjava {
    public:
       explicit File(const std::string&);
       ~File();
+      std::string getAbsolutePath() const;
       std::string getName() const;
       bool exists() const;
-      bool isDirectory();
-      long long lastModified();
+      std::string getParent() const;
+      bool isDirectory() const;
+      int64_t lastModified();
 
    private:
       std::string myPathName;

@@ -2,6 +2,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Calendar;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -32,8 +33,11 @@ public class SimpleTester extends DefaultHandler {
       } catch (Exception fnfe) {
          System.out.println("tried to parse " + args[0] + ". error: " + fnfe.getMessage());
       }
-      System.out.println(args[0] + " was last modified " + new File(args[0]).lastModified());
-
+      File myFile = new File(args[0]);
+      System.out.println(myFile.getAbsolutePath() + " was last modified " + myFile.lastModified());
+      Calendar fileCalendar = Calendar.getInstance();
+      fileCalendar.setTimeInMillis(myFile.lastModified());
+      System.out.println("which means year: " + fileCalendar.get(Calendar.YEAR) + ", month: " + fileCalendar.get(Calendar.MONTH) + ", date: " + fileCalendar.get(Calendar.DAY_OF_MONTH) + ", hour: " + fileCalendar.get(Calendar.HOUR_OF_DAY) + ", minute: " + fileCalendar.get(Calendar.MINUTE) + ", second: " + fileCalendar.get(Calendar.SECOND));
       File file = new File("/tmp/bestofjava/java_time.txt");
  
       // if file doesnt exists, then create it
@@ -45,7 +49,27 @@ public class SimpleTester extends DefaultHandler {
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(new Long(System.currentTimeMillis()).toString());
       bw.close();
-    }
+      Calendar oldCal=Calendar.getInstance(),newCal=Calendar.getInstance();
+      
+      if (myFile.exists()) System.out.println("oh yes, " + myFile.getName() + " exists");
+      else System.out.println("crap, " + myFile.getName() + " does not exist");
+      System.out.println("the absolute path is " + myFile.getAbsolutePath());
+      System.out.println("the parent dir is " + myFile.getParent());
+      File parentDir = new File(myFile.getParent());
+      if (parentDir.isDirectory()) System.out.println(parentDir.getAbsolutePath() + " is a directory");
+      else System.out.println(parentDir.getAbsolutePath() + " is not a directory");
+      oldCal.setTimeInMillis(myFile.lastModified());
+      newCal.setTimeInMillis(System.currentTimeMillis());
+      if (oldCal.after(newCal)) System.out.println("oups, " + oldCal.getTimeInMillis() + " is after " + newCal.getTimeInMillis());
+      if (newCal.before(oldCal)) System.out.println("oups, " + newCal.getTimeInMillis() + " is before " + oldCal.getTimeInMillis());
+      // Calendar getset = Calendar.getInstance();
+      // getset.set(2014, 4, 5);
+      // System.out.println("2014-04-05 in millis: " + getset.getTimeInMillis());
+      // System.out.println("year: " + getset.get(Calendar.YEAR) + ", month: " + getset.get(Calendar.MONTH) + ", date: " + getset.get(Calendar.DAY_OF_MONTH) + ", hour: " + getset.get(Calendar.HOUR_OF_DAY) + ", minute: " + getset.get(Calendar.MINUTE) + ", second: " + getset.get(Calendar.SECOND));
+      // getset.setTimeInMillis(getset.getTimeInMillis());
+      // System.out.println("after calendar time is reset in millis: year: " + getset.get(Calendar.YEAR) + ", month: " + getset.get(Calendar.MONTH) + ", date: " + getset.get(Calendar.DAY_OF_MONTH) + ", hour: " + getset.get(Calendar.HOUR_OF_DAY) + ", minute: " + getset.get(Calendar.MINUTE) + ", second: " + getset.get(Calendar.SECOND));
+
+   }
 
 
    /*

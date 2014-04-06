@@ -70,7 +70,7 @@ namespace bestofjava {
       myOutputStream->write(std::to_string(i).c_str());
    }
 
-   void PrintWriter::print(long long l) const {
+   void PrintWriter::print(int64_t l) const {
       myOutputStream->write(std::to_string(l).c_str());
    }
 

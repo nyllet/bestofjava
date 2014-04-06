@@ -17,6 +17,8 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 #include "Calendar.hpp"
+#include <iostream>
+#include <sys/time.h>
 
 namespace bestofjava {
 
@@ -33,22 +35,32 @@ namespace bestofjava {
    Calendar::Calendar() : myTimeInMillis(-1) {
    }
 
-   bool Calendar::after(Calendar when){
+   /**
+    * Returns whether this Calendar represents a time after the time represented by the specified Calendar.
+    */
+    bool Calendar::after(Calendar when) const {
       return compareTo(when) > 0;
    }
-   
-   bool Calendar::before(Calendar when) {
+
+   /**
+    * Returns whether this Calendar represents a time before the time represented by the specified Calendar.
+    */
+   bool Calendar::before(Calendar when) const {
       return compareTo(when) < 0;
    }
 
-   int Calendar::compareTo(Calendar anotherCalendar) {
+   void Calendar::clear() {
+      myTimeInMillis = -1;
+   }
+   
+   int Calendar::compareTo(Calendar anotherCalendar) const {
       if (myTimeInMillis < anotherCalendar.getTimeInMillis()) return -1;
       if (myTimeInMillis > anotherCalendar.getTimeInMillis()) return 1;
       return 0;
    }
 
 
-   int Calendar::get(int i) { 
+   int Calendar::get(int i) const { 
       time_t theTime;
       if (myTimeInMillis != -1) theTime = myTimeInMillis / 1000; 
       else theTime = System::currentTimeMillis() / 1000;   // get the current time
@@ -108,25 +120,33 @@ namespace bestofjava {
       return -1;
    }
 
-   uint64_t Calendar::getTimeInMillis() {
+   int64_t Calendar::getTimeInMillis() const {
       return myTimeInMillis;
    }
 
-   void Calendar::set(int year, int month, int day) {
-/* get current timeinfo and modify it to the user's choice */
-      time_t rawtime;
-      time ( &rawtime );
-      struct tm * timeinfo = localtime ( &rawtime );
+   /**
+    * Sets the values for the calendar fields YEAR, MONTH, and DAY_OF_MONTH
+    */
+   void Calendar::set(int year, int month, int day) { //TODO(nyllet): this method sets myTimeInMillis differently than in java. FIX!
+      struct timeval tv;
+      struct timezone tz;
+      int res = gettimeofday(&tv, &tz); 
+      if (res != 0) {
+         return; 
+      }
+      struct tm timeInfoIn;
+      struct tm * timeinfo = localtime_r(&tv.tv_sec,&timeInfoIn);
       timeinfo->tm_year = year - 1900;
       timeinfo->tm_mon = month - 1;
       timeinfo->tm_mday = day;
-      
-      /* call mktime: timeinfo->tm_wday will be set */
-      time_t theTime = mktime (timeinfo);
-      myTimeInMillis = theTime * 1000;
+      char eposecs[32];
+      strftime(eposecs, sizeof(eposecs), "%s", timeinfo);
+      char result[14];
+      snprintf(result, sizeof(result), "%ld%03ld\n",atol(eposecs), static_cast<long>(tv.tv_usec)/static_cast<long>(1000));
+      myTimeInMillis = atol(result);
    }
    
-   void Calendar::setTimeInMillis(uint64_t millis) {
+   void Calendar::setTimeInMillis(int64_t millis) {
       myTimeInMillis = millis;
    }
 

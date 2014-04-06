@@ -34,16 +34,17 @@ namespace bestofjava {
       static int YEAR, WEEK_OF_YEAR;
       static const int MONDAY=2,TUESDAY=3,WEDNESDAY=4,THURSDAY=5,FRIDAY=6,SATURDAY=7,SUNDAY=1;
       static const int JANUARY=0, FEBRUARY=1, MARCH=2, APRIL=3,MAY=4,JUNE=5,JULY=6,AUGUST=7,SEPTEMBER=8,OCTOBER=9,NOVEMBER=10,DECEMBER=11;
-      bool after(Calendar when);
-      bool before(Calendar when);
-      int compareTo(Calendar anotherCalendar);
-      int get(int i);
-      uint64_t getTimeInMillis();
+      bool after(Calendar when) const;
+      bool before(Calendar when) const;
+      void clear();
+      int compareTo(Calendar anotherCalendar) const;
+      int get(int i) const;
+      int64_t getTimeInMillis() const;
       void set(int year, int month, int date);
-      void setTimeInMillis(uint64_t);
+      void setTimeInMillis(int64_t);
       
    private:
-      uint64_t myTimeInMillis;
+      int64_t myTimeInMillis;
    };
 
 } // namespace bestofjava

@@ -34,7 +34,7 @@ namespace bestofjava {
       void print(const char*) const;
       void print(double d) const;
       void print(int i) const;
-      void print(long long) const;
+      void print(int64_t) const;
       void print(std::string* s) const;
       void print(const std::string&) const;
       void print(unsigned int) const;
