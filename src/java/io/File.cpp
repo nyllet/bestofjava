@@ -35,8 +35,7 @@ namespace bestofjava {
 
    std::string File::getAbsolutePath() const {
       if (myPathName.at(0) == '/') return myPathName;
-      char buf[128];
-      return std::string(getcwd(buf,128)).append("/").append(myPathName);
+      return std::string(getcwd(nullptr,0)).append("/").append(myPathName);
    }
    
    std::string File::getName() const {
@@ -49,8 +48,7 @@ namespace bestofjava {
       size_t lastSlash = myPathName.find_last_of('/');
       if (lastSlash != std::string::npos) 
          return myPathName.substr(0,lastSlash);
-      char buf[128];
-      return std::string(getcwd(buf,128));
+      return std::string(getcwd(nullptr,0));
 
    }
 

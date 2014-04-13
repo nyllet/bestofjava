@@ -36,6 +36,9 @@ namespace bestofjava {
    void OutputStream::flush() {
    }
 
+   /**
+    * this method is a bit of a temporary solution. this is NOT the java way
+    */
    void OutputStream::setOstream(std::ostream* os) {
       myOstream = os;
    }

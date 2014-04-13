@@ -65,8 +65,6 @@ int main(int argc, char **argv) {
    std::ofstream myfile;
    myfile.open ("/tmp/bestofjava/cpp_time.txt");
    myfile << bestofjava::System::currentTimeMillis() << std::endl;
-   myfile.close();
-   
    //Create a "parser factory" for creating SAX parsers
    bestofjava::SAXParserFactory spfac = bestofjava::SAXParserFactory::newInstance();
    
@@ -95,15 +93,14 @@ int main(int argc, char **argv) {
    newCal.setTimeInMillis(bestofjava::System::currentTimeMillis());
    if (oldCal.after(newCal)) std::cout << "oups, " << oldCal.getTimeInMillis() << " is after " << newCal.getTimeInMillis() << std::endl;
    if (newCal.before(oldCal)) std::cout << "oups, " << newCal.getTimeInMillis() << " is before " << oldCal.getTimeInMillis() << std::endl;
-   // bestofjava::Calendar getset;
-   // int year=2014, month=4, day_of_month=5;
-   // getset.set(year, month, day_of_month);
-   // std::cout << "2014-04-05 in millis: " << getset.getTimeInMillis() << std::endl;
-   // std::cout << "year: " << getset.get(bestofjava::Calendar::YEAR) << ", month: " << getset.get(bestofjava::Calendar::MONTH) << ", date: " << getset.get(bestofjava::Calendar::DAY_OF_MONTH) << ", hour: " << getset.get(bestofjava::Calendar::HOUR_OF_DAY) << ", minute: " << getset.get(bestofjava::Calendar::MINUTE) << ", second: " << getset.get(bestofjava::Calendar::SECOND) << std::endl;
-   // getset.setTimeInMillis(getset.getTimeInMillis());
-   // std::cout << "after calendar time is reset in millis: year: " << getset.get(bestofjava::Calendar::YEAR) << ", month: " << getset.get(bestofjava::Calendar::MONTH) << ", date: " << getset.get(bestofjava::Calendar::DAY_OF_MONTH) << ", hour: " << getset.get(bestofjava::Calendar::HOUR_OF_DAY) << ", minute: " << getset.get(bestofjava::Calendar::MINUTE) << ", second: " << getset.get(bestofjava::Calendar::SECOND) << std::endl;
-   
-   
+   bestofjava::Calendar getset;
+   int year=2014, month=3, day_of_month=5;
+   getset.set(year, month, day_of_month);
+   myfile << getset.getTimeInMillis() << std::endl; // 2014-04-05 in millis
+   myfile.close();
+   std::cout << "year: " << getset.get(bestofjava::Calendar::YEAR) << ", month: " << getset.get(bestofjava::Calendar::MONTH) << ", date: " << getset.get(bestofjava::Calendar::DAY_OF_MONTH) << std::endl;
+   getset.setTimeInMillis(getset.getTimeInMillis());
+   std::cout << "after calendar time is reset in millis: year: " << getset.get(bestofjava::Calendar::YEAR) << ", month: " << getset.get(bestofjava::Calendar::MONTH) << ", date: " << getset.get(bestofjava::Calendar::DAY_OF_MONTH) << std::endl;
    
 }
 

@@ -19,11 +19,6 @@
 #ifndef CALENDAR
 #define CALENDAR
 
-#include <cstdint>
-#include <cstdlib>
-#include <ctime>
-#include "java/lang/System.hpp"
-
 namespace bestofjava {
 
    class Calendar {
@@ -36,7 +31,6 @@ namespace bestofjava {
       static const int JANUARY=0, FEBRUARY=1, MARCH=2, APRIL=3,MAY=4,JUNE=5,JULY=6,AUGUST=7,SEPTEMBER=8,OCTOBER=9,NOVEMBER=10,DECEMBER=11;
       bool after(Calendar when) const;
       bool before(Calendar when) const;
-      void clear();
       int compareTo(Calendar anotherCalendar) const;
       int get(int i) const;
       int64_t getTimeInMillis() const;

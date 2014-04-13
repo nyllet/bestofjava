@@ -48,7 +48,7 @@ public class SimpleTester extends DefaultHandler {
       FileWriter fw = new FileWriter(file.getAbsoluteFile());
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(new Long(System.currentTimeMillis()).toString());
-      bw.close();
+      bw.newLine();
       Calendar oldCal=Calendar.getInstance(),newCal=Calendar.getInstance();
       
       if (myFile.exists()) System.out.println("oh yes, " + myFile.getName() + " exists");
@@ -62,12 +62,13 @@ public class SimpleTester extends DefaultHandler {
       newCal.setTimeInMillis(System.currentTimeMillis());
       if (oldCal.after(newCal)) System.out.println("oups, " + oldCal.getTimeInMillis() + " is after " + newCal.getTimeInMillis());
       if (newCal.before(oldCal)) System.out.println("oups, " + newCal.getTimeInMillis() + " is before " + oldCal.getTimeInMillis());
-      // Calendar getset = Calendar.getInstance();
-      // getset.set(2014, 4, 5);
-      // System.out.println("2014-04-05 in millis: " + getset.getTimeInMillis());
-      // System.out.println("year: " + getset.get(Calendar.YEAR) + ", month: " + getset.get(Calendar.MONTH) + ", date: " + getset.get(Calendar.DAY_OF_MONTH) + ", hour: " + getset.get(Calendar.HOUR_OF_DAY) + ", minute: " + getset.get(Calendar.MINUTE) + ", second: " + getset.get(Calendar.SECOND));
-      // getset.setTimeInMillis(getset.getTimeInMillis());
-      // System.out.println("after calendar time is reset in millis: year: " + getset.get(Calendar.YEAR) + ", month: " + getset.get(Calendar.MONTH) + ", date: " + getset.get(Calendar.DAY_OF_MONTH) + ", hour: " + getset.get(Calendar.HOUR_OF_DAY) + ", minute: " + getset.get(Calendar.MINUTE) + ", second: " + getset.get(Calendar.SECOND));
+      Calendar getset = Calendar.getInstance();
+      getset.set(2014, 3, 5);
+      bw.write(new Long(getset.getTimeInMillis()).toString()); //2014-04-05 in millis
+      bw.close();
+      System.out.println("year: " + getset.get(Calendar.YEAR) + ", month: " + getset.get(Calendar.MONTH) + ", date: " + getset.get(Calendar.DAY_OF_MONTH));
+      getset.setTimeInMillis(getset.getTimeInMillis());
+      System.out.println("after calendar time is reset in millis: year: " + getset.get(Calendar.YEAR) + ", month: " + getset.get(Calendar.MONTH) + ", date: " + getset.get(Calendar.DAY_OF_MONTH));
 
    }
 
@@ -90,7 +91,7 @@ public class SimpleTester extends DefaultHandler {
       System.out.print("<" + qName + ">");
       if (!uri.equals("")) System.out.print("uri: " + uri + " ");
       if (!localName.equals("")) System.out.print("localName: " + localName + " ");
-      //  for(int i=0; i < attributes.getLength(); i++)
+//   for(int i=0; i < attributes.getLength(); i++)
       //  System.out.print(attributes.getQName(i) + " has type " + attributes.getType(i) + " ");
    }
    

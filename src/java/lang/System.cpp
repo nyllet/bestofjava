@@ -14,10 +14,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#include <sys/time.h>
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include <chrono>
 #include "System.hpp"
 
 namespace bestofjava {
@@ -25,20 +22,8 @@ namespace bestofjava {
    /**
     * Returns the current time in milliseconds. Note that while the unit of time of the return value is a millisecond, the granularity of the value depends on the underlying operating system and may be larger. For example, many operating systems measure time in units of tens of milliseconds. */
    int64_t System::currentTimeMillis() {
-      struct timeval tv;
-      struct timezone tz;
-      int res = gettimeofday(&tv, &tz); 
-      if (res != 0) {
-         std::cerr << "gettimeofday returned " << res << std::endl;
-         return res; // res is -1 in this case
-      }
-      struct tm *mtm;
-      struct tm timeInfo;
-      mtm = localtime_r(&tv.tv_sec,&timeInfo);
-      char eposecs[32];
-      strftime(eposecs, sizeof(eposecs), "%s", mtm);
-      char result[14];
-      snprintf(result, sizeof(result), "%ld%03ld\n",atol(eposecs), static_cast<long>(tv.tv_usec)/static_cast<long>(1000));
-      return atol(result);
+      std::chrono::time_point<std::chrono::system_clock> my_now = std::chrono::system_clock::now();
+      auto duration =my_now.time_since_epoch();
+      return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
    }
 } // namespace bestofjava

@@ -16,9 +16,12 @@
 
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
-#include "Calendar.hpp"
-#include <iostream>
+
 #include <sys/time.h>
+#include <chrono>
+#include <iostream>
+#include "Calendar.hpp"
+#include "java/lang/System.hpp"
 
 namespace bestofjava {
 
@@ -49,10 +52,6 @@ namespace bestofjava {
       return compareTo(when) < 0;
    }
 
-   void Calendar::clear() {
-      myTimeInMillis = -1;
-   }
-   
    int Calendar::compareTo(Calendar anotherCalendar) const {
       if (myTimeInMillis < anotherCalendar.getTimeInMillis()) return -1;
       if (myTimeInMillis > anotherCalendar.getTimeInMillis()) return 1;
@@ -103,7 +102,7 @@ namespace bestofjava {
       if (i == MONTH) {
          char res[3];
          if (strftime( res, sizeof(res), "%m", tmp ) == 0) return -1;
-         return atoi(res);
+         return atoi(res) - 1;
       }
       if (i == SECOND) {
          char res[3];
@@ -125,25 +124,29 @@ namespace bestofjava {
    }
 
    /**
-    * Sets the values for the calendar fields YEAR, MONTH, and DAY_OF_MONTH
+    * Sets the values for the calendar fields YEAR, MONTH, and DAY_OF_MONTH. Previous values of other calendar fields are retained. If this is not desired, call clear() first.
+    *
+    * Parameters:
+    * year - the value used to set the YEAR calendar field.
+    * month - the value used to set the MONTH calendar field. Month value is 0-based. e.g., 0 for January.
+    * date - the value used to set the DAY_OF_MONTH calendar field.
     */
-   void Calendar::set(int year, int month, int day) { //TODO(nyllet): this method sets myTimeInMillis differently than in java. FIX!
+   void Calendar::set(int year, int month, int date) {
       struct timeval tv;
       struct timezone tz;
       int res = gettimeofday(&tv, &tz); 
       if (res != 0) {
          return; 
       }
-      struct tm timeInfoIn;
-      struct tm * timeinfo = localtime_r(&tv.tv_sec,&timeInfoIn);
+      std::tm timeInfoIn;
+      std::tm * timeinfo = localtime_r(&tv.tv_sec,&timeInfoIn);
       timeinfo->tm_year = year - 1900;
-      timeinfo->tm_mon = month - 1;
-      timeinfo->tm_mday = day;
-      char eposecs[32];
-      strftime(eposecs, sizeof(eposecs), "%s", timeinfo);
-      char result[14];
-      snprintf(result, sizeof(result), "%ld%03ld\n",atol(eposecs), static_cast<long>(tv.tv_usec)/static_cast<long>(1000));
-      myTimeInMillis = atol(result);
+      timeinfo->tm_mon = month;
+      timeinfo->tm_mday = date;
+      std::time_t tt = timelocal(timeinfo);
+      std::chrono::system_clock::time_point tp = std::chrono::system_clock::from_time_t(tt);
+      auto this_time_since_epoch =tp.time_since_epoch();
+      myTimeInMillis = std::chrono::duration_cast<std::chrono::milliseconds>(this_time_since_epoch).count();
    }
    
    void Calendar::setTimeInMillis(int64_t millis) {
