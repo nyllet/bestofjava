@@ -14,10 +14,11 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
+#include "org/xml/sax/Attributes.hpp"
+#include "java/io/File.hpp"
 #include "SAXParser.hpp"
 #include <expat.h>
 #include <cassert>
-#include <cstring>
 #include <string>
 #include <iostream> //needed for std::cerr
 
@@ -63,8 +64,8 @@ void handle_data(void *context, const char *content, int length) {
 
 namespace bestofjava {
 
-   void SAXParser::parse(const File& xmlfile, DefaultHandler& dh) {
-      ctxt.dh = &dh;
+   void SAXParser::parse(const File& xmlfile, DefaultHandler* dh) {
+      ctxt.dh = dh;
       FILE *docfd;
       docfd = fopen(xmlfile.getAbsolutePath().c_str(), "r");
       if (docfd == nullptr) {
@@ -93,7 +94,7 @@ namespace bestofjava {
       // XML_ParsingStatus myStatus;
       // XML_GetParsingStatus(parser, &myStatus);
       // if (myStatus.parsing == XML_FINISHED) XML_ParserReset(parser, nullptr); 
-      DefaultHandler::startDocument_callback(&dh);
+      DefaultHandler::startDocument_callback(dh);
       bool success = true;
       for (;;) {
          int bytes_read;
@@ -121,7 +122,7 @@ namespace bestofjava {
          if (bytes_read == 0)
             break;
       }  
-      if (success) DefaultHandler::endDocument_callback(&dh);
+      if (success) DefaultHandler::endDocument_callback(dh);
 /* Free resource used by expat */
       XML_ParserFree(parser);
       fclose(docfd);

@@ -19,9 +19,12 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "java/io/File.hpp"
+#include "org/xml/sax/Attributes.hpp"
 #include "SimpleTester.hpp"
 #include "javax/xml/parsers/SAXParserFactory.hpp"
 #include "java/io/PrintWriter.hpp"
+#include "java/io/OutputStreamWriter.hpp"
 #include "java/lang/System.hpp"
 #include "java/util/Calendar.hpp"
 
@@ -76,7 +79,7 @@ int main(int argc, char **argv) {
    
    //Finally, tell the parser to parse the input and notify the handler
    bestofjava::File myFile(argv[1]);
-   sp.parse(myFile, handler);
+   sp.parse(myFile, &handler);
    std::cout << myFile.getAbsolutePath() << " was last modified " << myFile.lastModified() << std::endl;
    bestofjava::Calendar fileCalendar;
    fileCalendar.setTimeInMillis(myFile.lastModified());
@@ -100,8 +103,11 @@ int main(int argc, char **argv) {
    myfile.close();
    std::cout << "year: " << getset.get(bestofjava::Calendar::YEAR) << ", month: " << getset.get(bestofjava::Calendar::MONTH) << ", date: " << getset.get(bestofjava::Calendar::DAY_OF_MONTH) << std::endl;
    getset.setTimeInMillis(getset.getTimeInMillis());
-   std::cout << "after calendar time is reset in millis: year: " << getset.get(bestofjava::Calendar::YEAR) << ", month: " << getset.get(bestofjava::Calendar::MONTH) << ", date: " << getset.get(bestofjava::Calendar::DAY_OF_MONTH) << std::endl;
-   
+   bestofjava::OutputStreamWriter osw(&std::cout);
+   bestofjava::PrintWriter pw(&osw);
+   pw.println(std::string("after calendar time is reset in millis: year: ").append(std::to_string(getset.get(bestofjava::Calendar::YEAR))).append(", month: ").append(std::to_string(getset.get(bestofjava::Calendar::MONTH))).append(", date: ").append(std::to_string(getset.get(bestofjava::Calendar::DAY_OF_MONTH))));
+   pw.flush();
+   pw.close();
 }
 
 

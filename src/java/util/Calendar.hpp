@@ -24,21 +24,21 @@ namespace bestofjava {
    class Calendar {
    public:
       Calendar();
-      static int DAY_OF_MONTH, DAY_OF_WEEK;
-      static int MONTH,HOUR_OF_DAY,MINUTE,SECOND;
-      static int YEAR, WEEK_OF_YEAR;
+      static const int DAY_OF_MONTH = 5, DAY_OF_WEEK = 7;
+      static const int MONTH = 2,HOUR_OF_DAY = 11,MINUTE=12,SECOND=13;
+      static const int YEAR = 1, WEEK_OF_YEAR=3;
       static const int MONDAY=2,TUESDAY=3,WEDNESDAY=4,THURSDAY=5,FRIDAY=6,SATURDAY=7,SUNDAY=1;
       static const int JANUARY=0, FEBRUARY=1, MARCH=2, APRIL=3,MAY=4,JUNE=5,JULY=6,AUGUST=7,SEPTEMBER=8,OCTOBER=9,NOVEMBER=10,DECEMBER=11;
       bool after(Calendar when) const;
       bool before(Calendar when) const;
       int compareTo(Calendar anotherCalendar) const;
       int get(int i) const;
-      int64_t getTimeInMillis() const;
+      uint64_t getTimeInMillis() const;
       void set(int year, int month, int date);
-      void setTimeInMillis(int64_t);
+      void setTimeInMillis(uint64_t);
       
    private:
-      int64_t myTimeInMillis;
+      uint64_t myTimeInMillis;
    };
 
 } // namespace bestofjava

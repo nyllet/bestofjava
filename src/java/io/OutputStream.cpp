@@ -34,6 +34,7 @@ namespace bestofjava {
     * The flush method of OutputStream does nothing. 
     */
    void OutputStream::flush() {
+      if (myOstream != nullptr) myOstream->flush();
    }
 
    /**

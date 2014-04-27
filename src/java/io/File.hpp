@@ -30,7 +30,7 @@ namespace bestofjava {
       bool exists() const;
       std::string getParent() const;
       bool isDirectory() const;
-      int64_t lastModified();
+      uint64_t lastModified();
 
    private:
       std::string myPathName;

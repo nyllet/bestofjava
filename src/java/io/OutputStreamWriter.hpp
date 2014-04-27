@@ -27,7 +27,8 @@ namespace bestofjava {
 
    class OutputStreamWriter : public Writer {
    public:
-      OutputStreamWriter() : myOutputStream(nullptr) {}
+      OutputStreamWriter();
+      explicit OutputStreamWriter(std::ostream*);
       explicit OutputStreamWriter(OutputStream* os);
       virtual void close();
       virtual void flush();
@@ -38,6 +39,7 @@ namespace bestofjava {
    private:
       OutputStreamWriter(const OutputStreamWriter&);
       OutputStreamWriter& operator=(const OutputStreamWriter&);
+      std::ostream* myOstream;
    };
 
 } // namespace bestofjava

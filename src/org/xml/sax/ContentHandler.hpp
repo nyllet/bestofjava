@@ -19,7 +19,8 @@
 
 
 #include <string>
-#include "org/xml/sax/Attributes.hpp"
+
+class Attributes;
 
 namespace bestofjava {
 

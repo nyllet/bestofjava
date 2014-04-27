@@ -19,7 +19,8 @@
 
 #include <string>
 #include "org/xml/sax/helpers/DefaultHandler.hpp"
-#include "java/io/File.hpp"
+
+class File;
 
 
 typedef struct {
@@ -36,7 +37,7 @@ namespace bestofjava {
       SAXParser(const SAXParser&);
       SAXParser& operator=(const SAXParser&);
       ~SAXParser();
-      void parse(const File&,  DefaultHandler&); // TODO(nyllet): DefaultHandler should be const
+      void parse(const File&,  DefaultHandler*);
       
    private:
       PContext ctxt;

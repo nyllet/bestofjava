@@ -18,8 +18,9 @@
 #define DEFAULTHANDLER_H
 
 #include <string>
-#include "org/xml/sax/Attributes.hpp"
 #include "org/xml/sax/ContentHandler.hpp"
+
+class Attributes;
 
 namespace bestofjava {
 

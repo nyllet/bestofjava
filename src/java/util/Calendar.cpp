@@ -19,23 +19,13 @@
 
 #include <sys/time.h>
 #include <chrono>
-#include <iostream>
+#include <cstdlib> // for atoi
 #include "Calendar.hpp"
 #include "java/lang/System.hpp"
 
 namespace bestofjava {
 
-   int Calendar::YEAR = 1;
-   int Calendar::MONTH = 2;
-   int Calendar::WEEK_OF_YEAR = 3;
-   int Calendar::DAY_OF_MONTH = 5;
-   int Calendar::DAY_OF_WEEK = 7;
-   int Calendar::HOUR_OF_DAY = 11;
-   int Calendar::MINUTE = 12;
-   int Calendar::SECOND = 13;
-
-
-   Calendar::Calendar() : myTimeInMillis(-1) {
+   Calendar::Calendar() : myTimeInMillis(0) {
    }
 
    /**
@@ -61,7 +51,7 @@ namespace bestofjava {
 
    int Calendar::get(int i) const { 
       time_t theTime;
-      if (myTimeInMillis != -1) theTime = myTimeInMillis / 1000; 
+      if (myTimeInMillis != 0) theTime = myTimeInMillis / 1000;
       else theTime = System::currentTimeMillis() / 1000;   // get the current time
       struct tm timeInfo;
       struct tm *tmp = localtime_r(&theTime,&timeInfo);  // convert to local
@@ -119,7 +109,7 @@ namespace bestofjava {
       return -1;
    }
 
-   int64_t Calendar::getTimeInMillis() const {
+   uint64_t Calendar::getTimeInMillis() const {
       return myTimeInMillis;
    }
 
@@ -149,7 +139,7 @@ namespace bestofjava {
       myTimeInMillis = std::chrono::duration_cast<std::chrono::milliseconds>(this_time_since_epoch).count();
    }
    
-   void Calendar::setTimeInMillis(int64_t millis) {
+   void Calendar::setTimeInMillis(uint64_t millis) {
       myTimeInMillis = millis;
    }
 

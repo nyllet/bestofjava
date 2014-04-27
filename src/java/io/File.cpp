@@ -16,7 +16,6 @@
 #include "File.hpp"
 #include <sys/stat.h>
 #include <unistd.h>
-#include <ctime>
 #include <string>
 
 namespace bestofjava {
@@ -68,10 +67,10 @@ namespace bestofjava {
     *       since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if
     *       an I/O error occurs
     */
-   int64_t File::lastModified() {
+   uint64_t File::lastModified() {
       struct stat64 attrib;			// create a file attribute structure
       stat64(myPathName.c_str(), &attrib);		// get the attributes of afile.txt
-      return (static_cast<int64_t>(1000))*attrib.st_mtime;
+      return (static_cast<uint64_t>(1000))*attrib.st_mtime;
    }
 
 } // namespace bestofjava

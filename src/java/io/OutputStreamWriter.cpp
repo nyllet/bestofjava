@@ -18,13 +18,19 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#include <string>
 #include "OutputStream.hpp"
 #include "OutputStreamWriter.hpp"
+#include <string>
 
 namespace bestofjava {
 
-   OutputStreamWriter::OutputStreamWriter(OutputStream* out) : myOutputStream(out) {
+   OutputStreamWriter::OutputStreamWriter() : myOutputStream(nullptr), myOstream(nullptr) {
+   }
+
+   OutputStreamWriter::OutputStreamWriter(OutputStream* out) : myOutputStream(out), myOstream(nullptr) {
+   }
+
+   OutputStreamWriter::OutputStreamWriter(std::ostream* os) :  myOutputStream(nullptr), myOstream(os) {
    }
 
    void OutputStreamWriter::close() {
@@ -33,14 +39,27 @@ namespace bestofjava {
 
    void OutputStreamWriter::flush() {
       if (myOutputStream != nullptr) myOutputStream->flush();
+      else if (myOstream != nullptr) myOstream->flush();
    }
 
    void OutputStreamWriter::setOstream(std::ostream* os) {
       if (myOutputStream != nullptr) myOutputStream->setOstream(os);
+      else myOstream = os;
    }
 
    void OutputStreamWriter::write(const char* cbuf, int off, int len) {
-      if (myOutputStream != nullptr) myOutputStream->write(cbuf,off,len);
+      if (myOutputStream != nullptr) {
+         myOutputStream->write(cbuf,off,len);
+         return;
+      }
+      if (myOstream != nullptr && off == 0) {
+         myOstream->write(cbuf, len);
+         return;
+      }
+      if (myOstream != nullptr && off > 0) {
+         std::string s(cbuf);
+         myOstream->write(s.substr(off,len).c_str(),len);
+      }
    }
    
 } // namespace bestofjava

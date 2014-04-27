@@ -2,6 +2,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -68,8 +70,10 @@ public class SimpleTester extends DefaultHandler {
       bw.close();
       System.out.println("year: " + getset.get(Calendar.YEAR) + ", month: " + getset.get(Calendar.MONTH) + ", date: " + getset.get(Calendar.DAY_OF_MONTH));
       getset.setTimeInMillis(getset.getTimeInMillis());
-      System.out.println("after calendar time is reset in millis: year: " + getset.get(Calendar.YEAR) + ", month: " + getset.get(Calendar.MONTH) + ", date: " + getset.get(Calendar.DAY_OF_MONTH));
-
+      PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+      pw.println("after calendar time is reset in millis: year: " + getset.get(Calendar.YEAR) + ", month: " + getset.get(Calendar.MONTH) + ", date: " + getset.get(Calendar.DAY_OF_MONTH));
+      pw.flush();
+      pw.close();
    }
 
 

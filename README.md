@@ -17,12 +17,12 @@ This library aims to provide an API which is reasonably similar to the OpenJDK r
 ## INSTALLATION ##
 all the details are described in the INSTALL file, but as of now the INSTALL file does not tell the whole truth: there is no configure file in this repo. Fortunately, you may generate it easily yourself like this:
 
-0) mkdir m4
-1) aclocal
-2) autoheader
-3) libtoolize
-4) autoconf
-5) automake --add-missing
+0. mkdir m4
+1. aclocal
+2. autoheader
+3. libtoolize
+4. autoconf
+5. automake --add-missing
 
 and then continue with the usual ./configure && make && sudo make install.
 

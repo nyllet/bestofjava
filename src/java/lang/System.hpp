@@ -23,7 +23,7 @@ namespace bestofjava {
    class System {
    public:
       
-      static int64_t currentTimeMillis();
+      static uint64_t currentTimeMillis();
    
    };
 
