@@ -12,7 +12,7 @@ no warranty.  See the file COPYING for details.
 This small project started out a couple of years ago as a collection of classes and methods of things that the author perceived as more elegantly implemented in java than in c++. One such thing is to encapsulate platform dependent code. Another thing is to provide methods for things that can be done with a simple one liner in java, but takes a lot of typing to get the job done in c++, such as get the current time in milliseconds for instance. The biggest block of code in the libarary right now is the SAXParser which is based on expat.
 
 ## Statement of compliance ##
-This library aims to provide an API which is reasonably similar to the OpenJDK reference implemenatation of java version 1.7.0_51.
+This library aims to provide an API which is reasonably similar to the OpenJDK reference implemenatation of java version 1.7.0_55.
 
 ## INSTALLATION ##
 all the details are described in the INSTALL file, but as of now the INSTALL file does not tell the whole truth: there is no configure file in this repo. Fortunately, you may generate it easily yourself like this:

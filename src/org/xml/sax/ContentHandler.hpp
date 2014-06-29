@@ -20,9 +20,9 @@
 
 #include <string>
 
-class Attributes;
-
 namespace bestofjava {
+
+   class Attributes;
 
    class ContentHandler {
    public:

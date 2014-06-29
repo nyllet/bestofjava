@@ -20,16 +20,15 @@
 #include <string>
 #include "org/xml/sax/helpers/DefaultHandler.hpp"
 
-class File;
-
-
 typedef struct {
    bestofjava::DefaultHandler* dh;
    std::string last_content;
 } PContext;
 
 namespace bestofjava {
-   
+
+   class File;
+
    class SAXParser {
       
    public:

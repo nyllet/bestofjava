@@ -69,8 +69,12 @@ namespace bestofjava {
     */
    uint64_t File::lastModified() {
       struct stat64 attrib;			// create a file attribute structure
-      stat64(myPathName.c_str(), &attrib);		// get the attributes of afile.txt
-      return (static_cast<uint64_t>(1000))*attrib.st_mtime;
+      if (stat64(myPathName.c_str(), &attrib) == 0) {		// get the attributes of myPathName
+         return (static_cast<uint64_t>(1000))*attrib.st_mtime;
+      } else  {
+         perror("error in File::lastModified()");
+         return 0;
+      }
    }
 
 } // namespace bestofjava

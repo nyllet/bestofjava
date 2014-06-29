@@ -20,9 +20,8 @@
 #include <string>
 #include "org/xml/sax/ContentHandler.hpp"
 
-class Attributes;
-
 namespace bestofjava {
+   class Attributes;
 
    class DefaultHandler : public ContentHandler {
       

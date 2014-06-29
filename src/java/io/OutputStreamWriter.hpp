@@ -20,10 +20,11 @@
 #ifndef OUTPUT_STREAM_WRITER_H
 #define OUTPUT_STREAM_WRITER_H
 
-class OutputStream;
 #include "Writer.hpp"
 
 namespace bestofjava {
+
+   class OutputStream;
 
    class OutputStreamWriter : public Writer {
    public:

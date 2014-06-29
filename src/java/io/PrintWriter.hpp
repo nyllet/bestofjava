@@ -20,9 +20,9 @@
 #include <string>
 #include "java/io/Writer.hpp"
 
-class OutputStream;
-
 namespace bestofjava {
+
+   class OutputStream;
 
    class PrintWriter : public Writer {
    public:
