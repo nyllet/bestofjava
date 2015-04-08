@@ -72,7 +72,7 @@ namespace bestofjava {
       if (stat64(myPathName.c_str(), &attrib) == 0) {		// get the attributes of myPathName
          return (static_cast<uint64_t>(1000))*attrib.st_mtime;
       } else  {
-         perror("error in File::lastModified()");
+         perror(std::string("error in File::lastModified() while trying to stat ").append(myPathName).c_str());
          return 0;
       }
    }

@@ -30,7 +30,7 @@ namespace bestofjava {
       void write(const char*, int, int);
       virtual void write(int b) = 0;
       void setOstream(std::ostream*);
-      virtual void write(const char*) = 0;
+      virtual void write(const std::string&) = 0;
       
    protected:
       std::ostream* myOstream;
