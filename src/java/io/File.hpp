@@ -31,6 +31,7 @@ namespace bestofjava {
       std::string getParent() const;
       bool isDirectory() const;
       uint64_t lastModified();
+      static const std::string separator;
 
    private:
       std::string myPathName;

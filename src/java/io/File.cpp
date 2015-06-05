@@ -1,5 +1,5 @@
 /* An abstract representation of file and directory pathnames. 
-   Copyright (C) 2014 Martin Nylin
+   Copyright (C) 2014,2015 Martin Nylin
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -19,6 +19,13 @@
 #include <string>
 
 namespace bestofjava {
+
+#if defined(_WIN32) || defined(_WIN64) || defined(__WIN32__)
+   const std::string File::separator("\\"); //will this work for msdos and others? maybe not....
+#else
+   const std::string File::separator("/");
+#endif
+
 
    File::File(const std::string& pathname) : myPathName(pathname) {
    }
