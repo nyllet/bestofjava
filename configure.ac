@@ -21,6 +21,7 @@ AC_CHECK_HEADERS([sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
+AX_CHECK_COMPILE_FLAG([-std=c++14], [CXX="$CXX -std=c++14"], [AX_CHECK_COMPILE_FLAG([-std=c++11], [CXX="$CXX -std=c++11"],AC_MSG_ERROR([your compiler does not support c++11. please upgrade it. gcc 4.9 or clang 3.5 or any later version of them will do the job]))])
 
 AC_CHECK_LIB(expat, XML_ParserCreate, [], [
 echo "Error! You need libexpat1-dev."

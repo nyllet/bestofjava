@@ -24,7 +24,7 @@ namespace bestofjava {
    class OutputStream : public std::ostream {
    public:
       OutputStream();
-      OutputStream(const OutputStream&);
+      explicit OutputStream(const OutputStream&);
       void close();
       void flush();
       void write(const char*, int, int);

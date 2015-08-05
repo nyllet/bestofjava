@@ -18,8 +18,7 @@ libbestofjava_la_SOURCES = src/java/util/Calendar.cpp \
 			src/javax/xml/parsers/SAXParser.cpp
 
 libbestofjava_la_CXXFLAGS = \
-	-I$(top_srcdir)/src \
-	-std=c++14
+	-I$(top_srcdir)/src
 
 libbestofjava_la_LDFLAGS = -version-info 0:0:0
 

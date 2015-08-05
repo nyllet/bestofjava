@@ -12,7 +12,7 @@ xmlFile=`find /usr -name '*.xml' -printf "%k %p\n" | sort -n | tail -1 | awk '{ 
 valgrind --version >/dev/null 2>&1 || { echo >&2 "you need valgrind, but it's not installed. bailing out"; exit 1; }
 cppLogFile="${logdir}/cpptest.txt"
 
-javac -version >/dev/null 2>&1 || { echo >&2 "you need a java compiler, but it's not installed. on debian gnu/linux it's as simple as sudo apt-get install openjdk-7-jdk. bailing out"; exit 1; }
+javac -version >/dev/null 2>&1 || { echo >&2 "you need a java compiler, but it's not installed. on debian gnu/linux it's as simple as sudo apt-get install openjdk-8-jdk. bailing out"; exit 1; }
 javac -d $logdir -Werror ${srcdir}/SimpleTester.java
 if [ "$?" -ne 0 ]; then
     echo "failed to compile ${srcdir}/SimpleTester.java"
