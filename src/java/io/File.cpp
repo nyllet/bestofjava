@@ -75,13 +75,18 @@ namespace bestofjava {
     *       an I/O error occurs
     */
    uint64_t File::lastModified() {
+#ifdef __USE_LARGEFILE64
       struct stat64 attrib;			// create a file attribute structure
       if (stat64(myPathName.c_str(), &attrib) == 0) {		// get the attributes of myPathName
+#else
+      struct stat attrib;			// create a file attribute structure
+      if (stat(myPathName.c_str(), &attrib) == 0) {		// get the attributes of myPathName
+#endif
          return (static_cast<uint64_t>(1000))*attrib.st_mtime;
       } else  {
-         perror(std::string("error in File::lastModified() while trying to stat ").append(myPathName).c_str());
-         return 0;
-      }
-   }
+            perror(std::string("error in File::lastModified() while trying to stat ").append(myPathName).c_str());
+            return 0;
+         }
+    }
 
 } // namespace bestofjava

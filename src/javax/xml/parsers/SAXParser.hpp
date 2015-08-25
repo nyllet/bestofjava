@@ -18,7 +18,10 @@
 #define SAXPARSER_H
 
 #include <string>
-#include "org/xml/sax/helpers/DefaultHandler.hpp"
+
+namespace bestofjava {
+   class DefaultHandler;
+}
 
 typedef struct {
    bestofjava::DefaultHandler* dh;

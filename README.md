@@ -17,16 +17,16 @@ This library aims to provide an API which is reasonably similar to the OpenJDK r
 ## INSTALLATION ##
 all the details are described in the INSTALL file, but as of now the INSTALL file does not tell the whole truth: there is no configure file in this repo. Fortunately, you may generate it easily yourself like this:
 
-0. make sure aclocal, autoheader, libtoolize, autoconf, automake and other dependencies are installed before you proceed. On a debian based system it is as simple as just
+1. make sure aclocal, autoheader, libtoolize, autoconf, automake and other dependencies are installed before you proceed. On a debian based system it is as simple as just
 
-   sudo apt-get install automake libtool autoconf-archive libexpat1-dev make
+        sudo apt-get install automake libtool autoconf-archive libexpat1-dev make
 
-1. mkdir m4
-2. aclocal
-3. autoheader
-4. libtoolize
-5. autoconf
-6. automake --add-missing
+2. mkdir m4
+3. aclocal
+4. autoheader
+5. libtoolize
+6. autoconf
+7. automake --add-missing
 
 and then continue with the usual
 
