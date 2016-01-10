@@ -39,7 +39,7 @@ namespace bestofjava {
       SAXParser(const SAXParser&);
       SAXParser& operator=(const SAXParser&);
       ~SAXParser();
-      void parse(const File&,  DefaultHandler*);
+      void parse(const File&,  DefaultHandler*); //throws IOException, SAXException
       
    private:
       PContext ctxt;

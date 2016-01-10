@@ -10,10 +10,12 @@ libbestofjava_la_SOURCES = src/java/util/Calendar.cpp \
 			src/java/io/OutputStream.cpp \
 			src/java/io/PrintWriter.cpp \
 			src/java/io/File.cpp \
+			src/java/io/IOException.cpp \
 			src/java/io/Writer.cpp \
 			src/java/lang/System.cpp \
 			src/org/xml/sax/helpers/DefaultHandler.cpp \
 			src/org/xml/sax/Attributes.cpp \
+			src/org/xml/sax/SAXException.cpp \
 			src/javax/xml/parsers/SAXParserFactory.cpp \
 			src/javax/xml/parsers/SAXParser.cpp
 
@@ -21,8 +23,6 @@ libbestofjava_la_CXXFLAGS = \
 	-I$(top_srcdir)/src
 
 libbestofjava_la_LDFLAGS = -version-info 0:0:0
-
-
 
 ## Define an independent executable script for inclusion in the distribution
 ## archive. However, it will not be installed on an end user's system due to

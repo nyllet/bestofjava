@@ -16,12 +16,13 @@
 
 #include "org/xml/sax/Attributes.hpp"
 #include "org/xml/sax/helpers/DefaultHandler.hpp"
+#include "org/xml/sax/SAXException.hpp"
 #include "java/io/File.hpp"
+#include "java/io/IOException.hpp"
 #include "SAXParser.hpp"
 #include <expat.h>
 #include <cassert>
 #include <string>
-#include <iostream> //needed for std::cerr
 
 int XMLCALL unknownEncodingHandler(void *encodingHandlerData __attribute__((__unused__)),const XML_Char *name __attribute__((__unused__)),
                                    XML_Encoding *info __attribute__((__unused__))) {
@@ -65,13 +66,12 @@ void handle_data(void *context, const char *content, int length) {
 
 namespace bestofjava {
 
-   void SAXParser::parse(const File& xmlfile, DefaultHandler* dh) {
+   void SAXParser::parse(const File& xmlfile, DefaultHandler* dh) { //throws IOException, SAXException
       ctxt.dh = dh;
       FILE *docfd;
       docfd = fopen(xmlfile.getAbsolutePath().c_str(), "r");
       if (docfd == nullptr) {
-         std::cerr << "SAXParser::parse failed to open " << xmlfile.getAbsolutePath() << " for parsing." << std::endl;
-         return;
+         throw IOException(std::string("SAXParser::parse failed to open ").append(xmlfile.getAbsolutePath()).append(" for parsing."));
       }
       int BUFF_SIZE = 255;
       XML_Parser parser = XML_ParserCreate(nullptr);
@@ -96,37 +96,35 @@ namespace bestofjava {
       // XML_GetParsingStatus(parser, &myStatus);
       // if (myStatus.parsing == XML_FINISHED) XML_ParserReset(parser, nullptr); 
       DefaultHandler::startDocument_callback(dh);
-      bool success = true;
+      std::string error_msg;
       for (;;) {
          int bytes_read;
          void* buff = XML_GetBuffer(parser, BUFF_SIZE);
 
          if (buff == nullptr) {
-            std::cerr << "SAXParser::parse error says XML_GetBuffer returned nullptr while parsing " << xmlfile.getAbsolutePath() << ", error = " << XML_GetErrorCode(parser) << ". meaning " << XML_ErrorString(XML_GetErrorCode(parser)) << std::endl;           
-             success = false;
-             break;
+            error_msg = std::string("SAXParser::parse error: XML_GetBuffer returned nullptr while parsing ").append(xmlfile.getAbsolutePath()).append(", error = ").append(std::to_string(XML_GetErrorCode(parser))).append(". meaning ").append(XML_ErrorString(XML_GetErrorCode(parser)));
+            break;
          } 
          
          bytes_read = static_cast<int>(fread(buff, 1, BUFF_SIZE, docfd));
          if (bytes_read < 0) {
-            std::cerr << "SAXParser::parse error says fread failed while parsing " << xmlfile.getAbsolutePath() << std::endl;
-            success = false;
+            error_msg = std::string("SAXParser::parse error: fread failed while parsing ").append(xmlfile.getAbsolutePath());
             break;
          }
       
          if (! XML_ParseBuffer(parser, bytes_read, bytes_read == 0)) {
-            std::cerr << "SAXParser::parse error says XML_ParseBuffer failed while parsing " << xmlfile.getAbsolutePath() << std::endl;
-            success = false;
+            error_msg = std::string("SAXParser::parse error: XML_ParseBuffer failed while parsing ").append(xmlfile.getAbsolutePath());
             break;
          }
       
          if (bytes_read == 0)
             break;
       }  
-      if (success) DefaultHandler::endDocument_callback(dh);
+      if (error_msg.empty()) DefaultHandler::endDocument_callback(dh);
 /* Free resource used by expat */
       XML_ParserFree(parser);
       fclose(docfd);
+      if (!error_msg.empty()) throw SAXException(error_msg);
    }
 
    SAXParser::SAXParser() : ctxt{nullptr, ""} {
