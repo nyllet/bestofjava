@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 return_value=0
 logdir="/tmp/bestofjava"
@@ -7,9 +7,9 @@ if ! mkdir $logdir; then
     exit 1
 fi
 
-
-xmlFile=`find /usr -name '*.xml' -printf "%k %p\n" | sort -n | tail -1 | awk '{ print $2 }'`
-valgrind --version >/dev/null 2>&1 || { echo >&2 "you need valgrind, but it's not installed. bailing out"; exit 1; }
+xmlFile=`find /usr -name '*.xml' -ls | awk '{ print $7,$11 }' | sort -n | tail -1 | awk '{ print $2 }'`
+hasValgrind=true
+valgrind --version >/dev/null 2>&1 || { echo >&2 "valgrind not found. let's try without it"; hasValgrind=false; }
 cppLogFile="${logdir}/cpptest.txt"
 
 javac -version >/dev/null 2>&1 || { echo >&2 "you need a java compiler, but it's not installed. on debian gnu/linux it's as simple as sudo apt-get install openjdk-8-jdk. bailing out"; exit 1; }
@@ -22,7 +22,11 @@ fi
 javaLogFile="${logdir}/javatest.txt"
 java -classpath $logdir SimpleTester $xmlFile > $javaLogFile &
 
-valgrind ./simple_tester $xmlFile > $cppLogFile 2> "${logdir}/valgrind.txt"
+if [ "$hasValgrind" = true ] ; then
+    valgrind ./simple_tester $xmlFile > $cppLogFile 2> "${logdir}/valgrind.txt"
+else
+    ./simple_tester $xmlFile > $cppLogFile
+fi
 
 while [ ! -f $javaLogFile ]
 do
@@ -30,19 +34,20 @@ do
   sleep 1
 done
 
-leaks=`grep 'All heap blocks were freed -- no leaks are possible' ${logdir}/valgrind.txt | wc -l`
+if [ "$hasValgrind" = true ] ; then
+    leaks=`grep 'All heap blocks were freed -- no leaks are possible' ${logdir}/valgrind.txt | wc -l`
 
-if [ "$leaks" -eq 0 ]; then
-    echo "you have memory leaks!"
-    return_value=3
+    if [ "$leaks" -eq 0 ]; then
+        echo "you have memory leaks!"
+        return_value=3
+    fi
+
+    valgrindErrors=`grep 'ERROR SUMMARY: 0 errors from 0 contexts' ${logdir}/valgrind.txt | wc -l`
+    if [ "$valgrindErrors" -eq 0 ]; then
+        echo "valgrind reports errors"
+        return_value=2
+    fi
 fi
-
-valgrindErrors=`grep 'ERROR SUMMARY: 0 errors from 0 contexts' ${logdir}/valgrind.txt | wc -l`
-if [ "$valgrindErrors" -eq 0 ]; then
-    echo "valgrind reports errors"
-    return_value=2
-fi
-
 
 my_diff=`diff $cppLogFile $javaLogFile`
 if [ "$?" -ne 0 ]; then
