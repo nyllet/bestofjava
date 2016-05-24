@@ -19,7 +19,7 @@ all the details are described in the INSTALL file, but as of now the INSTALL fil
 
 1. make sure aclocal, autoheader, libtoolize, autoconf, automake and other dependencies are installed before you proceed. On a debian based system it is as simple as just
 
-        sudo apt-get install automake libtool autoconf-archive libexpat1-dev make
+        sudo apt-get install automake libtool autoconf-archive libexpat1-dev make pkg-config
 
 2. mkdir m4
 3. aclocal
