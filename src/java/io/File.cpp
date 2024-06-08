@@ -82,7 +82,7 @@ namespace bestofjava {
       struct stat attrib;			// create a file attribute structure
       if (stat(myPathName.c_str(), &attrib) == 0) {		// get the attributes of myPathName
 #endif
-         return (static_cast<uint64_t>(1000))*attrib.st_mtime;
+         return static_cast<uint64_t>(attrib.st_mtime) * 1000U;
       } else  {
             perror(std::string("error in File::lastModified() while trying to stat ").append(myPathName).c_str());
             return 0;

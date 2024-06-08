@@ -1,1 +1,1 @@
-SUBDIRS = util io lang
+SUBDIRS = util io lang net

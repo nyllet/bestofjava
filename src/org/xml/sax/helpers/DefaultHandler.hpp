@@ -27,17 +27,17 @@ namespace bestofjava {
       
    public:
       DefaultHandler();
-      virtual ~DefaultHandler();
+      virtual ~DefaultHandler() override;
       /** By default, do nothing. */
-      virtual void startDocument();
+      virtual void startDocument() override;
       /** By default, do nothing. */
-      virtual void endDocument();
+      virtual void endDocument() override;
       /** By default, do nothing. */
-      virtual void startElement(const std::string& uri,const std::string& localname, const std::string&   qname, const Attributes& attrs) = 0;
+      virtual void startElement(const std::string& uri,const std::string& localname, const std::string& qname, const Attributes& attrs) override = 0;
       /** By default, do nothing. */
-      virtual void characters(const std::string&) = 0;
+      virtual void characters(const std::string&) override = 0;
       /** By default, do nothing. */
-      virtual void endElement(const std::string& uri, const std::string& localname,const std::string&   qname) = 0;
+      virtual void endElement(const std::string& uri, const std::string& localname,const std::string& qname) override = 0;
       static void startElement_callback(DefaultHandler*,const std::string&,const std::string&,const std::string& , const Attributes&);
       static void endElement_callback(DefaultHandler*,const std::string&,const std::string&,const std::string&);
       static void characters_callback(DefaultHandler*,const std::string& characters);

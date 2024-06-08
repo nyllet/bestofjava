@@ -51,10 +51,10 @@ namespace bestofjava {
 
    int Calendar::get(int i) const { 
       time_t theTime;
-      if (myTimeInMillis != 0) theTime = myTimeInMillis / 1000;
-      else theTime = System::currentTimeMillis() / 1000;   // get the current time
+      if (myTimeInMillis != 0) theTime = static_cast<time_t>(myTimeInMillis / 1000);
+      else theTime = static_cast<time_t>(System::currentTimeMillis() / 1000);   // get the current time
       struct tm timeInfo;
-      struct tm *tmp = localtime_r(&theTime,&timeInfo);  // convert to local
+      const struct tm *tmp = localtime_r(&theTime,&timeInfo);  // convert to local
 
       if (i == WEEK_OF_YEAR) {
          char res[3];
@@ -136,7 +136,7 @@ namespace bestofjava {
       std::time_t tt = timelocal(timeinfo);
       std::chrono::system_clock::time_point tp = std::chrono::system_clock::from_time_t(tt);
       auto this_time_since_epoch =tp.time_since_epoch();
-      myTimeInMillis = std::chrono::duration_cast<std::chrono::milliseconds>(this_time_since_epoch).count();
+      myTimeInMillis = static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(this_time_since_epoch).count());
    }
    
    void Calendar::setTimeInMillis(uint64_t millis) {

@@ -23,8 +23,8 @@ namespace bestofjava {
    
    class Writer  {
    public:
-      virtual ~Writer();
-      virtual void write(const char*, int, int) = 0;
+      virtual ~Writer() = default;
+      virtual void write(const char*, size_t, size_t) = 0;
       void write(const char*); 
       void write(const std::string&);
       virtual void close() = 0;

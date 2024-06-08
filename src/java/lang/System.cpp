@@ -18,12 +18,20 @@
 #include "System.hpp"
 
 namespace bestofjava {
-
+   
    /**
     * Returns the current time in milliseconds. Note that while the unit of time of the return value is a millisecond, the granularity of the value depends on the underlying operating system and may be larger. For example, many operating systems measure time in units of tens of milliseconds. */
    uint64_t System::currentTimeMillis() {
       std::chrono::time_point<std::chrono::system_clock> my_now = std::chrono::system_clock::now();
       auto duration =my_now.time_since_epoch();
-      return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+      return static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
    }
+
+/**
+ * Determines the current system properties. 
+ */
+   Properties System::getProperties() {
+      return Properties();
+   }
+
 } // namespace bestofjava

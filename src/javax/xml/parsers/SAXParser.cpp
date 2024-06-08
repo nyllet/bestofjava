@@ -60,7 +60,7 @@ void XMLCALL endElementCallback( void *context,const XML_Char *name __attribute_
 
 void handle_data(void *context, const char *content, int length) {
    PContext *ctxt = static_cast<PContext*>(context);
-   if (length >0 && content != nullptr) ctxt->last_content.append(content,length);
+   if (length >0 && content != nullptr) ctxt->last_content.append(content, static_cast<size_t>(length));
 }
 
 
@@ -106,7 +106,7 @@ namespace bestofjava {
             break;
          } 
          
-         bytes_read = static_cast<int>(fread(buff, 1, BUFF_SIZE, docfd));
+         bytes_read = static_cast<int>(fread(buff, 1, static_cast<size_t>(BUFF_SIZE), docfd));
          if (bytes_read < 0) {
             error_msg = std::string("SAXParser::parse error: fread failed while parsing ").append(xmlfile.getAbsolutePath());
             break;

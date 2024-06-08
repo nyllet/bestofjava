@@ -19,14 +19,9 @@ all the details are described in the INSTALL file, but as of now the INSTALL fil
 
 1. make sure aclocal, autoheader, libtoolize, autoconf, automake and other dependencies are installed before you proceed. On a debian based system it is as simple as just
 
-        sudo apt-get install automake libtool autoconf-archive libexpat1-dev make pkg-config
+        sudo apt-get install automake libtool autoconf-archive libexpat1-dev make pkg-config libcurlpp-dev
 
-2. mkdir m4
-3. aclocal
-4. autoheader
-5. libtoolize
-6. autoconf
-7. automake --add-missing
+2. mkdir m4 && aclocal && autoheader && libtoolize && autoconf && automake --add-missing
 
 and then continue with the usual
 

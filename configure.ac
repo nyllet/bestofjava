@@ -1,9 +1,10 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.69])
+AC_PREREQ([2.71])
 AC_INIT([bestofjava], [0.0.1])
 AC_CONFIG_SRCDIR([src/java/util/Calendar.cpp])
+AC_LANG([C++])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 
@@ -21,18 +22,25 @@ AC_CHECK_HEADERS([sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
-AX_CHECK_COMPILE_FLAG([-std=c++14], [CXX="$CXX -std=c++14"], [AX_CHECK_COMPILE_FLAG([-std=c++11], [CXX="$CXX -std=c++11"],AC_MSG_ERROR([your compiler does not support c++11. please upgrade it. gcc 4.9 or clang 3.5 or any later version of them will do the job]))])
+AX_CHECK_COMPILE_FLAG([-std=c++26], [CXX="$CXX -std=c++26"], [AX_CHECK_COMPILE_FLAG([-std=c++2x], [CXX="$CXX -std=c++2x"], [AX_CHECK_COMPILE_FLAG([-std=c++23], [CXX="$CXX -std=c++23"],[AX_CHECK_COMPILE_FLAG([-std=c++2b], [CXX="$CXX -std=c++2b"], AC_MSG_ERROR([your compiler does not support c++23. please upgrade it. gcc 12.2 or clang 14 or any later version of them will do the job]))])])])
+
+AC_CHECK_LIB(curl, curl_easy_init, [], [
+echo "Error! You need libcurl."
+exit -1
+])
 
 AC_CHECK_LIB(expat, XML_ParserCreate, [], [
 echo "Error! You need libexpat1-dev."
 exit -1             
 ])
 
+AC_CHECK_SIZEOF([long])
+
 # Checks for library functions.
 AC_FUNC_MKTIME
 AC_CHECK_FUNCS([gettimeofday localtime_r])
 
-LT_PREREQ([2.4.2])
+LT_PREREQ([2.4.7])
 LT_INIT([disable-static])
 
 AC_CONFIG_FILES([Makefile
@@ -40,6 +48,7 @@ AC_CONFIG_FILES([Makefile
                 src/java/Makefile
                 src/java/io/Makefile
                 src/java/lang/Makefile
+                src/java/net/Makefile
                 src/java/util/Makefile
                 src/org/xml/sax/Makefile
                 src/org/xml/sax/helpers/Makefile

@@ -31,10 +31,10 @@ namespace bestofjava {
       OutputStreamWriter();
       explicit OutputStreamWriter(std::ostream*);
       explicit OutputStreamWriter(OutputStream* os);
-      virtual void close();
-      virtual void flush();
+      virtual void close() override;
+      virtual void flush() override;
       void setOstream(std::ostream*);
-      virtual void write(const char*, int, int);
+      virtual void write(const char*, size_t, size_t) override;
    protected:
       OutputStream* myOutputStream;
    private:

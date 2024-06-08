@@ -132,7 +132,7 @@ namespace bestofjava {
       }
    }
 
-   void PrintWriter::write(const char* buf, int off, int len) {
+   void PrintWriter::write(const char* buf, size_t off, size_t len) {
       std::string tmpstr(buf);
       print(tmpstr.substr(off,len));
    }

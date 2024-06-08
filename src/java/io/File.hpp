@@ -16,6 +16,7 @@
 #ifndef FILE_H
 #define FILE_H
 
+#include <cstdint>
 #include <string>
 
 namespace bestofjava {

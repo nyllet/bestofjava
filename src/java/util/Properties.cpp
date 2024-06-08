@@ -1,0 +1,43 @@
+/*  The Properties class represents a persistent set of properties. The Properties can be saved to a stream or loaded from a stream. Each key and its corresponding value in the property list is a string.
+    A property list can contain another property list as its "defaults"; this second property list is searched if the property key is not found in the original property list. 
+   Copyright (C) 2017 Martin Nylin
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+
+#include <stdexcept>
+#include <string>
+#include <utility> //std::pair
+#include "Properties.hpp"
+
+namespace bestofjava {
+
+
+   std::string Properties::getProperty(const std::string& key) const {
+      try {
+         return at(key);
+      } catch (const std::out_of_range& oor) {
+         return "";
+      }
+   }
+
+/**
+ * Calls the unordered_map method insert. Provided for parallelism with the getProperty method. Enforces use of strings for property keys and values. 
+ * The value returned is the result of the Hashtable call to put.  
+ */
+   void Properties::setProperty(const std::string& key,const std::string& value) {
+      insert(std::make_pair(key,value));
+   }
+
+
+} // namespace bestofjava

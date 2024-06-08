@@ -17,6 +17,7 @@
 #ifndef LANG_SYSTEM
 #define LANG_SYSTEM
 
+#include "java/util/Properties.hpp"
 
 namespace bestofjava {
 
@@ -24,7 +25,7 @@ namespace bestofjava {
    public:
       
       static uint64_t currentTimeMillis();
-   
+      static Properties getProperties();
    };
 
 } // namespace bestofjava

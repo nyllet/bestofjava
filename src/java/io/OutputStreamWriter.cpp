@@ -47,18 +47,18 @@ namespace bestofjava {
       else myOstream = os;
    }
 
-   void OutputStreamWriter::write(const char* cbuf, int off, int len) {
+   void OutputStreamWriter::write(const char* cbuf, size_t off, size_t len) {
       if (myOutputStream != nullptr) {
          myOutputStream->write(cbuf,off,len);
          return;
       }
       if (myOstream != nullptr && off == 0) {
-         myOstream->write(cbuf, len);
+         myOstream->write(cbuf, static_cast<std::streamsize>(len));
          return;
       }
       if (myOstream != nullptr && off > 0) {
          std::string s(cbuf);
-         myOstream->write(s.substr(off,len).c_str(),len);
+         myOstream->write(s.substr(off,len).c_str(), static_cast<std::streamsize>(len));
       }
    }
    
