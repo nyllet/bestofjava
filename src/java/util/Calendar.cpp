@@ -136,7 +136,7 @@ namespace bestofjava {
       std::time_t tt = timelocal(timeinfo);
       std::chrono::system_clock::time_point tp = std::chrono::system_clock::from_time_t(tt);
       auto this_time_since_epoch =tp.time_since_epoch();
-      myTimeInMillis = std::chrono::duration_cast<std::chrono::milliseconds>(this_time_since_epoch).count();
+      myTimeInMillis = static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(this_time_since_epoch).count());
    }
    
    void Calendar::setTimeInMillis(uint64_t millis) {

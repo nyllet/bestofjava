@@ -28,7 +28,6 @@ namespace bestofjava {
    public:
       std::string getProperty(const std::string& key) const;
       void setProperty(const std::string& key, const std::string& value); //TODO return something?
-
    };
 
 } // namespace bestofjava

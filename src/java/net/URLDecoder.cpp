@@ -13,7 +13,7 @@ namespace bestofjava {
          int output_length;
          char* decoded_value = curl_easy_unescape(nullptr, encoded.c_str(), static_cast<int>(encoded.length()), &output_length);
          if (decoded_value) {
-            std::string result(decoded_value, output_length);
+            std::string result(decoded_value, static_cast<std::size_t>(output_length));
             curl_free(decoded_value);
             curl_easy_cleanup(curl);
             return result;

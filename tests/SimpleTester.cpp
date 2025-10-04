@@ -42,9 +42,9 @@ void SimpleTester::characters(const std::string& chars) {
  * it calls this method, which resets the string buffer
  */ 
 void SimpleTester::startElement(const std::string& uri,
-                                             const std::string& localName,
-                                             const std::string& qName,
-                                             const bestofjava::Attributes& attributes)  {
+                                const std::string& localName,
+                                const std::string& qName,
+                                const bestofjava::Attributes& /*attributes*/)  {
    temp = "";
    std::cout << "<" << qName << ">";
    if (!uri.empty()) std::cout << "uri: " << uri << " ";
@@ -55,8 +55,8 @@ void SimpleTester::startElement(const std::string& uri,
  * When the parser encounters the end of an element, it calls this method
  */
 void SimpleTester::endElement(const std::string&    uri,
-                                           const std::string&   localName,
-                                           const std::string&   qName) {
+                              const std::string&   localName,
+                              const std::string&   qName) {
    if (!uri.empty()) std::cout << "uri: " << uri << " ";
    if (!localName.empty()) std::cout << "localName: " << localName << " ";
    if (!temp.empty()) std::cout << "characters: " << temp;
@@ -64,7 +64,7 @@ void SimpleTester::endElement(const std::string&    uri,
 }
 
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **argv) {
    std::ofstream myfile;
    myfile.open ("/tmp/bestofjava/cpp_time.txt");
    myfile << bestofjava::System::currentTimeMillis() << std::endl;

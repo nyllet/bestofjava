@@ -24,7 +24,7 @@ namespace bestofjava {
    uint64_t System::currentTimeMillis() {
       std::chrono::time_point<std::chrono::system_clock> my_now = std::chrono::system_clock::now();
       auto duration =my_now.time_since_epoch();
-      return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+      return static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
    }
 
 /**

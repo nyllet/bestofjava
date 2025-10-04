@@ -4,6 +4,7 @@
 AC_PREREQ([2.72])
 AC_INIT([bestofjava], [0.0.1])
 AC_CONFIG_SRCDIR([src/java/util/Calendar.cpp])
+AC_LANG([C++])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 
