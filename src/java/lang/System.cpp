@@ -26,4 +26,12 @@ namespace bestofjava {
       auto duration =my_now.time_since_epoch();
       return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
    }
+
+/**
+ * Determines the current system properties.
+ */
+   Properties System::getProperties() {
+      return Properties();
+   }
+
 } // namespace bestofjava

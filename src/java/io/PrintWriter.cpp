@@ -34,9 +34,6 @@ namespace bestofjava {
       return *this;
    }
 
-   PrintWriter::~PrintWriter() {
-   }
-
    void PrintWriter::close(){
       if (myOutputStream != nullptr) myOutputStream->close();
       else myWriter->close();
@@ -61,14 +58,8 @@ namespace bestofjava {
       }
    }
 
-   void PrintWriter::print(std::string* str) const {
-      if (str == nullptr) return;
-      if (myOutputStream != nullptr) myOutputStream->write(str->c_str());
-      else myWriter->write(*str);
-   }
-
    void PrintWriter::print(const std::string& str) const {
-      if (myOutputStream != nullptr) myOutputStream->write(str.c_str());
+      if (myOutputStream != nullptr) myOutputStream->write(str);
       else myWriter->write(str);
    }
 
@@ -113,26 +104,16 @@ namespace bestofjava {
       }
    }
 
-
-   void PrintWriter::println(std::string* str) const {
-      if (myOutputStream != nullptr) {
-         myOutputStream->write(str->c_str());
-         *myOutputStream << std::endl;
-      } else {
-         myWriter->write(str->append("\n"));
-      }
-   }
-
    void PrintWriter::println(const std::string& str) const {
       if (myOutputStream != nullptr) {
-         myOutputStream->write(str.c_str());
+         myOutputStream->write(str);
          *myOutputStream << std::endl;
       } else {
          myWriter->write(std::string(str).append("\n"));
       }
    }
 
-   void PrintWriter::write(const char* buf, int off, int len) {
+   void PrintWriter::write(const char* buf, size_t off, size_t len) {
       std::string tmpstr(buf);
       print(tmpstr.substr(off,len));
    }

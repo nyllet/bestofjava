@@ -49,7 +49,7 @@ public class SimpleTester extends DefaultHandler {
  
       FileWriter fw = new FileWriter(file.getAbsoluteFile());
       BufferedWriter bw = new BufferedWriter(fw);
-      bw.write(new Long(System.currentTimeMillis()).toString());
+      bw.write(Long.valueOf(System.currentTimeMillis()).toString());
       bw.newLine();
       Calendar oldCal=Calendar.getInstance(),newCal=Calendar.getInstance();
       
@@ -66,7 +66,7 @@ public class SimpleTester extends DefaultHandler {
       if (newCal.before(oldCal)) System.out.println("oups, " + newCal.getTimeInMillis() + " is before " + oldCal.getTimeInMillis());
       Calendar getset = Calendar.getInstance();
       getset.set(2014, 3, 5);
-      bw.write(new Long(getset.getTimeInMillis()).toString()); //2014-04-05 in millis
+      bw.write(Long.valueOf(getset.getTimeInMillis()).toString()); //2014-04-05 in millis
       bw.close();
       System.out.println("year: " + getset.get(Calendar.YEAR) + ", month: " + getset.get(Calendar.MONTH) + ", date: " + getset.get(Calendar.DAY_OF_MONTH));
       getset.setTimeInMillis(getset.getTimeInMillis());

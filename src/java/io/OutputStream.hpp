@@ -27,7 +27,7 @@ namespace bestofjava {
       explicit OutputStream(const OutputStream&);
       void close();
       void flush();
-      void write(const char*, int, int);
+      void write(const char*, size_t, size_t);
       virtual void write(int b) = 0;
       void setOstream(std::ostream*);
       virtual void write(const std::string&) = 0;

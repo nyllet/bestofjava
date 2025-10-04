@@ -17,6 +17,7 @@
 #ifndef PRINT_WRITER
 #define PRINT_WRITER
 
+#include <cstdint>
 #include <string>
 #include "java/io/Writer.hpp"
 
@@ -29,23 +30,21 @@ namespace bestofjava {
       explicit PrintWriter(OutputStream* os);
       explicit PrintWriter(Writer* out);
       PrintWriter(const PrintWriter& pw) : myOutputStream(pw.myOutputStream), myWriter(pw.myWriter) {}
-      ~PrintWriter();
+      ~PrintWriter() override = default;
       PrintWriter& operator=(const PrintWriter&);
-      void close();
-      void flush();
+      void close() override;
+      void flush() override;
       void print(const char*) const;
       void print(double d) const;
       void print(int i) const;
       void print(int64_t) const;
       void print(uint64_t) const;
-      void print(std::string* s) const;
       void print(const std::string&) const;
       void print(unsigned int) const;
       void println(const char*) const;
       void println(double d) const;
-      void println(std::string*) const;
       void println(const std::string&) const;
-      void write(const char*, int , int);
+      void write(const char*, size_t, size_t) override;
 
    private:
       OutputStream* myOutputStream;

@@ -12,7 +12,7 @@ hasValgrind=true
 valgrind --version >/dev/null 2>&1 || { echo >&2 "valgrind not found. let's try without it"; hasValgrind=false; }
 cppLogFile="${logdir}/cpptest.txt"
 
-javac -version >/dev/null 2>&1 || { echo >&2 "you need a java compiler, but it's not installed. on debian gnu/linux it's as simple as sudo apt-get install openjdk-8-jdk. bailing out"; exit 1; }
+javac -version >/dev/null 2>&1 || { echo >&2 "you need a java compiler, but it's not installed. on debian gnu/linux it's as simple as sudo apt-get install openjdk-25-jdk. bailing out"; exit 1; }
 javac -d $logdir -Werror ${srcdir}/SimpleTester.java
 if [ "$?" -ne 0 ]; then
     echo "failed to compile ${srcdir}/SimpleTester.java"

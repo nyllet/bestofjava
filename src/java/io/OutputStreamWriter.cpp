@@ -47,7 +47,7 @@ namespace bestofjava {
       else myOstream = os;
    }
 
-   void OutputStreamWriter::write(const char* cbuf, int off, int len) {
+   void OutputStreamWriter::write(const char* cbuf, size_t off, size_t len) {
       if (myOutputStream != nullptr) {
          myOutputStream->write(cbuf,off,len);
          return;

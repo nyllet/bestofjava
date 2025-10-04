@@ -24,15 +24,11 @@ namespace bestofjava {
    DefaultHandler::DefaultHandler() {
    }
    
-   DefaultHandler::~DefaultHandler() {
-   }
-
    void DefaultHandler::startDocument() {
    }
    
    void DefaultHandler::endDocument(){
    }
-
     
    void DefaultHandler::startElement_callback(DefaultHandler* dh,const std::string& uri,const std::string& localname,const std::string& qname, const Attributes& atts){
       dh->startElement(uri,localname,qname,atts);

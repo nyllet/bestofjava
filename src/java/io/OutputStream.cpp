@@ -44,7 +44,7 @@ namespace bestofjava {
       myOstream = os;
    }
    
-   void OutputStream::write(const char* b,int off,int len) {
+   void OutputStream::write(const char* b, size_t off, size_t len) {
       std::string s(b);
       write(s.substr(off,len).c_str());
    }

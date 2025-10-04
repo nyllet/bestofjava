@@ -51,10 +51,10 @@ namespace bestofjava {
 
    int Calendar::get(int i) const { 
       time_t theTime;
-      if (myTimeInMillis != 0) theTime = myTimeInMillis / 1000;
-      else theTime = System::currentTimeMillis() / 1000;   // get the current time
+      if (myTimeInMillis != 0) theTime = static_cast<time_t>(myTimeInMillis / 1000);
+      else theTime = static_cast<time_t>(System::currentTimeMillis() / 1000);   // get the current time
       struct tm timeInfo;
-      struct tm *tmp = localtime_r(&theTime,&timeInfo);  // convert to local
+      const struct tm *tmp = localtime_r(&theTime,&timeInfo);  // convert to local
 
       if (i == WEEK_OF_YEAR) {
          char res[3];

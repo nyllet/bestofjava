@@ -26,7 +26,7 @@ namespace bestofjava {
 
    class ContentHandler {
    public:
-      virtual ~ContentHandler(){}
+      virtual ~ContentHandler() = default;
       /** Receive notification of the beginning of a document. */
       virtual void startDocument() = 0;
       /** Receive notification of the end of a document. */

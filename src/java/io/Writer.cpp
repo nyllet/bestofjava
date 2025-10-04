@@ -19,10 +19,6 @@
 
 namespace bestofjava {
 
-   Writer::~Writer() {
-
-   }
-
    void Writer::write(const char* cbuf) {
       std::string str(cbuf);
       write(cbuf, 0, static_cast<int>(str.length()));

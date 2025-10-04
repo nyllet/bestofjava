@@ -4,8 +4,10 @@ AUTOMAKE_OPTIONS = subdir-objects
 
 SUBDIRS = src tests
 ACLOCAL_AMFLAGS = -I m4
+
 lib_LTLIBRARIES = libbestofjava.la
 libbestofjava_la_SOURCES = src/java/util/Calendar.cpp \
+			src/java/util/Properties.cpp \
 			src/java/io/OutputStreamWriter.cpp \
 			src/java/io/OutputStream.cpp \
 			src/java/io/PrintWriter.cpp \
@@ -13,6 +15,7 @@ libbestofjava_la_SOURCES = src/java/util/Calendar.cpp \
 			src/java/io/IOException.cpp \
 			src/java/io/Writer.cpp \
 			src/java/lang/System.cpp \
+			src/java/net/URLDecoder.cpp \
 			src/org/xml/sax/helpers/DefaultHandler.cpp \
 			src/org/xml/sax/Attributes.cpp \
 			src/org/xml/sax/SAXException.cpp \
@@ -20,7 +23,8 @@ libbestofjava_la_SOURCES = src/java/util/Calendar.cpp \
 			src/javax/xml/parsers/SAXParser.cpp
 
 libbestofjava_la_CXXFLAGS = \
-	-I$(top_srcdir)/src
+	-I$(top_srcdir)/src \
+	-Weffc++ -Wall -Wextra -Werror -Wcast-align -Wcast-qual -Wconversion -Wdisabled-optimization -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wno-deprecated-declarations -Wno-format-y2k -Wno-format-extra-args -Wold-style-cast -Wpacked -Wpointer-arith -Wredundant-decls -Wshadow -Wsign-compare -Wundef
 
 libbestofjava_la_LDFLAGS = -version-info 0:0:0
 
