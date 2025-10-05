@@ -27,7 +27,7 @@ namespace bestofjava {
 
    class PrintWriter : public Writer {
    public:
-      explicit PrintWriter(OutputStream* os);
+      explicit PrintWriter(OutputStream* out);
       explicit PrintWriter(Writer* out);
       PrintWriter(const PrintWriter& pw) : myOutputStream(pw.myOutputStream), myWriter(pw.myWriter) {}
       ~PrintWriter() override = default;

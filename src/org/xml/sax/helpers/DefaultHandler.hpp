@@ -26,7 +26,7 @@ namespace bestofjava {
    class DefaultHandler : public ContentHandler {
       
    public:
-      DefaultHandler();
+      DefaultHandler() = default;
       ~DefaultHandler() override = default;
       /** By default, do nothing. */
       void startDocument() override;
@@ -40,7 +40,7 @@ namespace bestofjava {
       void endElement(const std::string& uri, const std::string& localname,const std::string& qname) override = 0;
       static void startElement_callback(DefaultHandler*,const std::string&,const std::string&,const std::string& , const Attributes&);
       static void endElement_callback(DefaultHandler*,const std::string&,const std::string&,const std::string&);
-      static void characters_callback(DefaultHandler*,const std::string& characters);
+      static void characters_callback(DefaultHandler*,const std::string& chars);
       static void startDocument_callback(DefaultHandler* dh);
       static void endDocument_callback(DefaultHandler* dh);
    };

@@ -25,12 +25,12 @@ namespace bestofjava {
    class SAXParserFactory {
       
    public:
-      ~SAXParserFactory();
+      ~SAXParserFactory() = default;
       static SAXParserFactory newInstance();
-      SAXParser newSAXParser(); 
+      static SAXParser newSAXParser();
       
    private:
-      SAXParserFactory();
+      SAXParserFactory() = default;
       
    };
 } // namespace bestofjava

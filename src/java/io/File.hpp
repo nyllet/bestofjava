@@ -17,6 +17,7 @@
 #define FILE_H
 
 #include <cstdint>
+#include <filesystem>
 #include <string>
 
 namespace bestofjava {
@@ -24,19 +25,18 @@ namespace bestofjava {
    class File {
 
    public:
-      explicit File(const std::string&);
-      ~File();
+      explicit File(std::string);
+      ~File() = default;
       std::string getAbsolutePath() const;
       std::string getName() const;
-      bool exists() const;
+      bool exists() const noexcept;
       std::string getParent() const;
-      bool isDirectory() const;
-      uint64_t lastModified();
+      bool isDirectory() const noexcept;
+      uint64_t lastModified() const noexcept;
       static const std::string separator;
 
    private:
-      std::string myPathName;
-
+      std::filesystem::path myPathName;
    };
 
 } // namespace bestofjava

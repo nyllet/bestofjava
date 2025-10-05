@@ -106,7 +106,8 @@ public class SimpleTester extends DefaultHandler {
                      throws SAXException {
       if (!uri.equals("")) System.out.print("uri: " + uri + " ");
       if (!localName.equals("")) System.out.print("localName: " + localName + " ");
-      if (!temp.equals("")) System.out.print("characters: " + temp);
+      temp = temp.trim();
+      if (!temp.isBlank() && !temp.equals("\n")) System.out.print("characters: " + temp + "\n");
       System.out.println("</" + qName + ">");
    }
    

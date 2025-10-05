@@ -34,17 +34,27 @@ namespace bestofjava {
    }
 
    void OutputStreamWriter::close() {
-      if (myOutputStream != nullptr) myOutputStream->close();
+      if (myOutputStream != nullptr) {
+         myOutputStream->close();
+      }
    }
 
    void OutputStreamWriter::flush() {
-      if (myOutputStream != nullptr) myOutputStream->flush();
-      else if (myOstream != nullptr) myOstream->flush();
+      if (myOutputStream != nullptr) {
+         myOutputStream->flush();
+         return;
+      }
+      if (myOstream != nullptr) {
+         myOstream->flush();
+      }
    }
 
    void OutputStreamWriter::setOstream(std::ostream* os) {
-      if (myOutputStream != nullptr) myOutputStream->setOstream(os);
-      else myOstream = os;
+      if (myOutputStream != nullptr) {
+         myOutputStream->setOstream(os);
+      } else {
+         myOstream = os;
+      }
    }
 
    void OutputStreamWriter::write(const char* cbuf, size_t off, size_t len) {
@@ -57,7 +67,7 @@ namespace bestofjava {
          return;
       }
       if (myOstream != nullptr && off > 0) {
-         std::string s(cbuf);
+         const std::string s(cbuf);
          myOstream->write(s.substr(off,len).c_str(), static_cast<std::streamsize>(len));
       }
    }

@@ -2,14 +2,7 @@
 
 namespace bestofjava {
 
-   SAXException::SAXException(const std::string& message) : myMessage(message) {
+   SAXException::SAXException(const std::string& message) : std::runtime_error(message) {
    }
 
-   SAXException::~SAXException() {
-   }
-
-   const char* SAXException::what() const noexcept {
-      return myMessage.c_str();
-   }
-
-} //namespace
+} // namespace bestofjava

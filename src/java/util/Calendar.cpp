@@ -43,70 +43,100 @@ namespace bestofjava {
    }
 
    int Calendar::compareTo(Calendar anotherCalendar) const {
-      if (myTimeInMillis < anotherCalendar.getTimeInMillis()) return -1;
-      if (myTimeInMillis > anotherCalendar.getTimeInMillis()) return 1;
+      if (myTimeInMillis < anotherCalendar.getTimeInMillis()) {
+         return -1;
+      }
+      if (myTimeInMillis > anotherCalendar.getTimeInMillis()) {
+         return 1;
+      }
       return 0;
    }
 
 
    int Calendar::get(int i) const { 
       time_t theTime;
-      if (myTimeInMillis != 0) theTime = static_cast<time_t>(myTimeInMillis / 1000);
-      else theTime = static_cast<time_t>(System::currentTimeMillis() / 1000);   // get the current time
+      if (myTimeInMillis != 0) {
+         theTime = static_cast<time_t>(myTimeInMillis / 1000);
+      } else {
+         theTime = static_cast<time_t>(System::currentTimeMillis() / 1000);   // get the current time
+      }
       struct tm timeInfo;
       const struct tm *tmp = localtime_r(&theTime,&timeInfo);  // convert to local
+      if (tmp == nullptr) {
+         return -1; // localtime_r failure
+      }
 
-      if (i == WEEK_OF_YEAR) {
-         char res[3];
-         if (strftime( res, sizeof(res), "%V", tmp ) == 0) return -1;
-         return atoi(res);
-      }
-      if (i == DAY_OF_MONTH) {
-         char res[3];
-         if (strftime( res, sizeof(res), "%d", tmp ) == 0) return -1;
-         return atoi(res);
-      }
-      if (i == DAY_OF_WEEK) {
-         char res[2];
-         switch (strftime( res, sizeof(res), "%u", tmp )) {
-            case 1 : return MONDAY;
-            case 2 : return TUESDAY;
-            case 3 : return WEDNESDAY;
-            case 4 : return THURSDAY;
-            case 5 : return FRIDAY;
-            case 6 : return SATURDAY;
-            case 7 : return SUNDAY;
-            default: return -1;
+      switch (i) {
+         case WEEK_OF_YEAR:
+         {
+            char res[3];
+            if (strftime( res, sizeof(res), "%V", tmp ) == 0) {
+               return -1;
+            }
+            return std::atoi(res);
          }
+         case DAY_OF_MONTH:
+         {
+            char res[3];
+            if (strftime( res, sizeof(res), "%d", tmp ) == 0) {
+               return -1;
+            }
+            return std::atoi(res);
+         }
+         case DAY_OF_WEEK:
+            switch (tmp->tm_wday) {
+               case 0: return SUNDAY; // Sunday -> 7 in Java-style, but here we return SUNDAY
+               case 1: return MONDAY;
+               case 2: return TUESDAY;
+               case 3: return WEDNESDAY;
+               case 4: return THURSDAY;
+               case 5: return FRIDAY;
+               case 6: return SATURDAY;
+               default: return -1;
+            }
+         case HOUR_OF_DAY:
+         {
+            char res[3];
+            if (strftime( res, sizeof(res), "%H", tmp ) == 0) {
+               return -1;
+            }
+            return std::atoi(res);
+         }
+         case MINUTE:
+         {
+            char res[3];
+            if (strftime( res, sizeof(res), "%M", tmp ) == 0) {
+               return -1;
+            }
+            return std::atoi(res);
+         }
+         case MONTH:
+         {
+            char res[3];
+            if (strftime( res, sizeof(res), "%m", tmp ) == 0) {
+               return -1;
+            }
+            return std::atoi(res) - 1;
+         }
+         case SECOND:
+         {
+            char res[3];
+            if (strftime( res, sizeof(res), "%S", tmp ) == 0) {
+               return -1;
+            }
+            return std::atoi(res);
+         }
+         case YEAR:
+         {
+            char res[5];
+            if (strftime( res, sizeof(res), "%Y", tmp ) == 0) {
+               return -1;
+            }
+            return std::atoi(res);
+         }
+         default:
+            return -1;
       }
-      if (i == HOUR_OF_DAY) {
-         char res[3];
-         if (strftime( res, sizeof(res), "%H", tmp ) == 0) return -1;
-         return atoi(res);
-      }
-      if (i == MINUTE) {
-         char res[3];
-         if (strftime( res, sizeof(res), "%M", tmp ) == 0) return -1;
-         return atoi(res);
-      }
-      if (i == MONTH) {
-         char res[3];
-         if (strftime( res, sizeof(res), "%m", tmp ) == 0) return -1;
-         return atoi(res) - 1;
-      }
-      if (i == SECOND) {
-         char res[3];
-         if (strftime( res, sizeof(res), "%S", tmp ) == 0) return -1;
-         return atoi(res);
-      }
-
-      if (i == YEAR) {
-         char res[5];
-         if (strftime( res, sizeof(res), "%Y", tmp ) == 0) return -1;
-         return atoi(res);
-      }
-
-      return -1;
    }
 
    uint64_t Calendar::getTimeInMillis() const {
@@ -124,7 +154,7 @@ namespace bestofjava {
    void Calendar::set(int year, int month, int date) {
       struct timeval tv;
       struct timezone tz;
-      int res = gettimeofday(&tv, &tz); 
+      const int res = gettimeofday(&tv, &tz);
       if (res != 0) {
          return; 
       }
@@ -133,8 +163,8 @@ namespace bestofjava {
       timeinfo->tm_year = year - 1900;
       timeinfo->tm_mon = month;
       timeinfo->tm_mday = date;
-      std::time_t tt = timelocal(timeinfo);
-      std::chrono::system_clock::time_point tp = std::chrono::system_clock::from_time_t(tt);
+      const std::time_t tt = timelocal(timeinfo);
+      const std::chrono::system_clock::time_point tp = std::chrono::system_clock::from_time_t(tt);
       auto this_time_since_epoch =tp.time_since_epoch();
       myTimeInMillis = static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(this_time_since_epoch).count());
    }

@@ -30,7 +30,7 @@ namespace bestofjava {
    public:
       OutputStreamWriter();
       explicit OutputStreamWriter(std::ostream*);
-      explicit OutputStreamWriter(OutputStream* os);
+      explicit OutputStreamWriter(OutputStream* out);
       void close() override;
       void flush() override;
       void setOstream(std::ostream*);

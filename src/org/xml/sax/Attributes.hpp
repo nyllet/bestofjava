@@ -19,6 +19,7 @@
 
 #include <expat.h>
 #include <string>
+#include <vector>
 
 namespace bestofjava {
    
@@ -26,11 +27,12 @@ namespace bestofjava {
       
    public:
       explicit Attributes(const XML_Char **);
-      int getLength() const;
-      std::string getQName(int index) const;
-      
+      std::size_t getLength() const noexcept;
+      const std::string& getQName(std::size_t i) const;
+      const std::string& getValue(std::size_t i) const;
+      std::string getValue(const std::string& qName) const;
    private:
-      const XML_Char** myAtts;
+      std::vector<std::pair<std::string, std::string>> myAtts;
    };
 
 } // namespace bestofjava

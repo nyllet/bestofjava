@@ -1,3 +1,4 @@
+
 /* Defines the API that wraps an XMLReader implementation class. 
    Copyright (C) 2014 Martin Nylin
 
@@ -24,20 +25,16 @@
 #include <cassert>
 #include <string>
 
-int XMLCALL unknownEncodingHandler(void *encodingHandlerData __attribute__((__unused__)),const XML_Char *name __attribute__((__unused__)),
-                                   XML_Encoding *info __attribute__((__unused__))) {
-/* If you know how to handle encoding with this 'name', you have to fill in
- * 'info' and return XML_STATUS_OK
- * You might be interested in iconv library
- */
+// cppcheck suggests that encodingHandlerData and info could be pointers to const. In fact they can not since the callback signature must match Expat’s XML_UnknownEncodingHandler typedef
+// cppcheck-suppress constParameterCallback
+int XMLCALL unknownEncodingHandler(void* encodingHandlerData __attribute__((__unused__)), const XML_Char *name __attribute__((__unused__)), XML_Encoding *info __attribute__((__unused__))) {
    return XML_STATUS_ERROR;
 }
 
-
 /* callback for start element, e.g. <tag> */
-void XMLCALL startElementCallback( void *context,const XML_Char *qname,const XML_Char **atts ){
+void XMLCALL startElementCallback(void *context, const XML_Char *qname, const XML_Char **atts ){
    PContext *ctxt = static_cast<PContext*>(context);
-   if (ctxt->last_content.length() > 0) {
+   if (!ctxt->last_content.empty()) {
       assert(ctxt->dh != nullptr);
       bestofjava::DefaultHandler::characters_callback(ctxt->dh, ctxt->last_content);
       ctxt->last_content = "";
@@ -51,8 +48,9 @@ void XMLCALL startElementCallback( void *context,const XML_Char *qname,const XML
  */
 void XMLCALL endElementCallback( void *context,const XML_Char *name __attribute__((__unused__)) ) {
    PContext *ctxt = static_cast<PContext*>(context);
-   if(ctxt->last_content.find_last_not_of(" \n\r\t") != std::string::npos) 
+   if (ctxt->last_content.find_last_not_of(" \n\r\t") != std::string::npos) {
       bestofjava::DefaultHandler::characters_callback(ctxt->dh, ctxt->last_content);
+   }
    ctxt->last_content = "";
    bestofjava::DefaultHandler::endElement_callback(ctxt->dh,std::string(""), std::string(""), std::string(name));
 }
@@ -60,7 +58,9 @@ void XMLCALL endElementCallback( void *context,const XML_Char *name __attribute_
 
 void handle_data(void *context, const char *content, int length) {
    PContext *ctxt = static_cast<PContext*>(context);
-   if (length >0 && content != nullptr) ctxt->last_content.append(content, static_cast<size_t>(length));
+   if (length >0 && content != nullptr) {
+      ctxt->last_content.append(content, static_cast<size_t>(length));
+   }
 }
 
 
@@ -68,12 +68,11 @@ namespace bestofjava {
 
    void SAXParser::parse(const File& xmlfile, DefaultHandler* dh) { //throws IOException, SAXException
       ctxt.dh = dh;
-      FILE *docfd;
-      docfd = fopen(xmlfile.getAbsolutePath().c_str(), "r");
+      std::FILE* docfd = std::fopen(xmlfile.getAbsolutePath().c_str(), "r");
       if (docfd == nullptr) {
          throw IOException(std::string("SAXParser::parse failed to open ").append(xmlfile.getAbsolutePath()).append(" for parsing."));
       }
-      int BUFF_SIZE = 255;
+      constexpr int BUFF_SIZE = 255;
       XML_Parser parser = XML_ParserCreate(nullptr);
 /* Create parser.
  * The only argument for XML_ParserCreate is encoding, and if it's nullptr,
@@ -90,6 +89,13 @@ namespace bestofjava {
 /* set callback for start element */
          XML_SetEndElementHandler(parser, &endElementCallback);
          XML_SetCharacterDataHandler(parser, handle_data);
+      } else {
+         std::string error_msg("Failed to create XML_Parser for ");
+         error_msg.append(xmlfile.getName());
+         if (std::fclose(docfd) != 0) {
+            error_msg.append(". And on top of that closing the file also failed");
+         }
+         throw SAXException(error_msg);
       }
       
       // XML_ParsingStatus myStatus;
@@ -98,7 +104,6 @@ namespace bestofjava {
       DefaultHandler::startDocument_callback(dh);
       std::string error_msg;
       for (;;) {
-         int bytes_read;
          void* buff = XML_GetBuffer(parser, BUFF_SIZE);
 
          if (buff == nullptr) {
@@ -106,32 +111,41 @@ namespace bestofjava {
             break;
          } 
          
-         bytes_read = static_cast<int>(fread(buff, 1, static_cast<size_t>(BUFF_SIZE), docfd));
-         if (bytes_read < 0) {
-            error_msg = std::string("SAXParser::parse error: fread failed while parsing ").append(xmlfile.getAbsolutePath());
+         const std::size_t bytes_read = std::fread(buff, 1, static_cast<size_t>(BUFF_SIZE), docfd);
+
+         if (bytes_read == 0) {
+            if (std::feof(docfd)) {
+               break;     // normal EOF
+            }
+         }
+         if (std::ferror(docfd)) {        // read error
+            error_msg = "SAXParser::parse error: fread failed on " + xmlfile.getAbsolutePath();
             break;
          }
       
-         if (! XML_ParseBuffer(parser, bytes_read, bytes_read == 0)) {
+         if (! XML_ParseBuffer(parser, static_cast<int>(bytes_read), bytes_read == 0)) {
             error_msg = std::string("SAXParser::parse error: XML_ParseBuffer failed while parsing ").append(xmlfile.getAbsolutePath());
             break;
          }
-      
-         if (bytes_read == 0)
-            break;
-      }  
-      if (error_msg.empty()) DefaultHandler::endDocument_callback(dh);
+         if (std::feof(docfd)) {
+            break;     // normal EOF
+         }
+      }
+      if (error_msg.empty()) {
+         DefaultHandler::endDocument_callback(dh);
+      }
 /* Free resource used by expat */
       XML_ParserFree(parser);
-      fclose(docfd);
-      if (!error_msg.empty()) throw SAXException(error_msg);
+      if ((std::fclose(docfd) != 0) && !error_msg.empty()) {
+         error_msg.append(". And on top of that closing the file also failed");
+      }
+      if (!error_msg.empty()) {
+         throw SAXException(error_msg);
+      }
    }
 
    SAXParser::SAXParser() : ctxt{nullptr, ""} {
    
-   }
-
-   SAXParser::~SAXParser() {
    }
 
 } // namespace bestofjava

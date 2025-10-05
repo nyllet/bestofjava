@@ -20,7 +20,7 @@
 namespace bestofjava {
 
    void Writer::write(const char* cbuf) {
-      std::string str(cbuf);
+      const std::string str(cbuf);
       write(cbuf, 0, str.length());
    }
 

@@ -4,13 +4,13 @@
 namespace bestofjava {
 
    std::string URLDecoder::decode(const std::string& encoded, const std::string& encoding) {
-      if (encoding.compare("UTF-8") != 0) {
+      if (encoding != "UTF-8") {
          //  throw java.io.UnsupportedEncodingException();
          return "";
       }
       CURL *curl = curl_easy_init();
       if (curl) {
-         int output_length;
+         int output_length = 0;
          char* decoded_value = curl_easy_unescape(nullptr, encoded.c_str(), static_cast<int>(encoded.length()), &output_length);
          if (decoded_value) {
             std::string result(decoded_value, static_cast<std::size_t>(output_length));
@@ -23,4 +23,4 @@ namespace bestofjava {
       return "";
    }
 
-} // namespace
+} // namespace bestofjava

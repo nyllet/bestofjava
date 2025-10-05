@@ -27,68 +27,96 @@ namespace bestofjava {
    }
 
    PrintWriter& PrintWriter::operator=(const PrintWriter& pw) {
-      if (this == &pw)
+      if (this == &pw) {
          return *this;
+      }
       this->myOutputStream = pw.myOutputStream;
       this->myWriter = pw.myWriter;
       return *this;
    }
 
    void PrintWriter::close(){
-      if (myOutputStream != nullptr) myOutputStream->close();
-      else myWriter->close();
+      if (myOutputStream != nullptr) {
+         myOutputStream->close();
+      } else {
+         myWriter->close();
+      }
    }
 
    void PrintWriter::flush(){
-      if (myOutputStream != nullptr) myOutputStream->flush();
-      else myWriter->flush();
+      if (myOutputStream != nullptr) {
+         myOutputStream->flush();
+      } else {
+         myWriter->flush();
+      }
    }
 
    void PrintWriter::print(const char* str) const {
-      if (myOutputStream != nullptr) myOutputStream->write(str);
-      else myWriter->write(str);
+      if (myOutputStream != nullptr) {
+         myOutputStream->write(str);
+      } else {
+         myWriter->write(str);
+      }
    }
 
    void PrintWriter::println(const char* str) const {
       if (myOutputStream != nullptr) {
          myOutputStream->write(str);
-         *myOutputStream << std::endl;
+         *myOutputStream << '\n';
       } else {
          myWriter->write(std::string(str).append("\n"));
       }
    }
 
    void PrintWriter::print(const std::string& str) const {
-      if (myOutputStream != nullptr) myOutputStream->write(str);
-      else myWriter->write(str);
+      if (myOutputStream != nullptr) {
+         myOutputStream->write(str);
+      } else {
+         myWriter->write(str);
+      }
    }
 
 /**
  * Prints a double-precision floating-point number.
  */
    void PrintWriter::print(double d) const {
-      if (myOutputStream != nullptr) myOutputStream->write(std::to_string(d).c_str());
-      else myWriter->write(std::to_string(d));
+      if (myOutputStream != nullptr) {
+         myOutputStream->write(std::to_string(d));
+      } else {
+         myWriter->write(std::to_string(d));
+      }
    }
 
    void PrintWriter::print(int i) const {
-      if (myOutputStream != nullptr) myOutputStream->write(std::to_string(i).c_str());
-      else myWriter->write(std::to_string(i));
+      if (myOutputStream != nullptr) {
+         myOutputStream->write(std::to_string(i));
+      } else {
+         myWriter->write(std::to_string(i));
+      }
    }
 
    void PrintWriter::print(int64_t l) const {
-      if (myOutputStream != nullptr) myOutputStream->write(std::to_string(l).c_str());
-      else myWriter->write(std::to_string(l));
+      if (myOutputStream != nullptr) {
+         myOutputStream->write(std::to_string(l));
+      } else {
+         myWriter->write(std::to_string(l));
+      }
    }
 
    void PrintWriter::print(uint64_t ul) const {
-      if (myOutputStream != nullptr) myOutputStream->write(std::to_string(ul).c_str());
-      else myWriter->write(std::to_string(ul));
+      if (myOutputStream != nullptr) {
+         myOutputStream->write(std::to_string(ul));
+      } else {
+         myWriter->write(std::to_string(ul));
+      }
    }
 
    void PrintWriter::print(unsigned int i) const {
-      if (myOutputStream != nullptr) myOutputStream->write(std::to_string(i).c_str());
-      else myWriter->write(std::to_string(i));
+      if (myOutputStream != nullptr) {
+         myOutputStream->write(std::to_string(i));
+      } else {
+         myWriter->write(std::to_string(i));
+      }
    }
 
 
@@ -97,8 +125,8 @@ namespace bestofjava {
  */
    void PrintWriter::println(double d) const {
       if (myOutputStream != nullptr) {
-         myOutputStream->write(std::to_string(d).c_str());
-         *myOutputStream << std::endl;
+         myOutputStream->write(std::to_string(d));
+         *myOutputStream << '\n';
       } else {
          myWriter->write(std::to_string(d).append("\n"));
       }
@@ -107,14 +135,14 @@ namespace bestofjava {
    void PrintWriter::println(const std::string& str) const {
       if (myOutputStream != nullptr) {
          myOutputStream->write(str);
-         *myOutputStream << std::endl;
+         *myOutputStream << '\n';
       } else {
          myWriter->write(std::string(str).append("\n"));
       }
    }
 
    void PrintWriter::write(const char* buf, size_t off, size_t len) {
-      std::string tmpstr(buf);
+      const std::string tmpstr(buf);
       print(tmpstr.substr(off,len));
    }
 

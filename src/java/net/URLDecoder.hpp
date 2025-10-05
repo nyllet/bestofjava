@@ -8,7 +8,7 @@ namespace bestofjava {
    class URLDecoder {
 
    public:
-      static std::string decode(const std::string& s, const std::string& enc);
+      static std::string decode(const std::string& encoded, const std::string& encoding);
 
    };
 

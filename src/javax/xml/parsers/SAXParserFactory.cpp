@@ -19,17 +19,11 @@
 
 namespace bestofjava {
 
-   SAXParserFactory::SAXParserFactory() {
-   }
-   
-   SAXParserFactory::~SAXParserFactory() {
-   }
-   
    SAXParserFactory SAXParserFactory::newInstance() {
-      return SAXParserFactory();
+      return {};
    }
    
    SAXParser SAXParserFactory::newSAXParser() {
-      return SAXParser();
+      return {};
    }
 } // namespace bestofjava

@@ -21,9 +21,6 @@
 
 namespace bestofjava {
 
-   DefaultHandler::DefaultHandler() {
-   }
-   
    void DefaultHandler::startDocument() {
    }
    

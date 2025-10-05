@@ -34,7 +34,9 @@ namespace bestofjava {
     * The flush method of OutputStream does nothing. 
     */
    void OutputStream::flush() {
-      if (myOstream != nullptr) myOstream->flush();
+      if (myOstream != nullptr) {
+         myOstream->flush();
+      }
    }
 
    /**
@@ -45,8 +47,8 @@ namespace bestofjava {
    }
    
    void OutputStream::write(const char* b, size_t off, size_t len) {
-      std::string s(b);
-      write(s.substr(off,len).c_str());
+      const std::string s(b);
+      write(s.substr(off,len));
    }
    
 } // namespace bestofjava

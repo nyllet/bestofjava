@@ -24,11 +24,11 @@ namespace bestofjava {
    class Calendar {
    public:
       Calendar();
-      static const int DAY_OF_MONTH = 5, DAY_OF_WEEK = 7;
-      static const int MONTH = 2,HOUR_OF_DAY = 11,MINUTE=12,SECOND=13;
-      static const int YEAR = 1, WEEK_OF_YEAR=3;
-      static const int MONDAY=2,TUESDAY=3,WEDNESDAY=4,THURSDAY=5,FRIDAY=6,SATURDAY=7,SUNDAY=1;
-      static const int JANUARY=0, FEBRUARY=1, MARCH=2, APRIL=3,MAY=4,JUNE=5,JULY=6,AUGUST=7,SEPTEMBER=8,OCTOBER=9,NOVEMBER=10,DECEMBER=11;
+      static constexpr int DAY_OF_MONTH = 5, DAY_OF_WEEK = 7;
+      static constexpr int MONTH = 2, HOUR_OF_DAY = 11, MINUTE=12, SECOND=13;
+      static constexpr int YEAR = 1, WEEK_OF_YEAR=3;
+      static constexpr int MONDAY=2, TUESDAY=3, WEDNESDAY=4, THURSDAY=5, FRIDAY=6, SATURDAY=7, SUNDAY=1;
+      static constexpr int JANUARY=0, FEBRUARY=1, MARCH=2, APRIL=3, MAY=4, JUNE=5, JULY=6, AUGUST=7, SEPTEMBER=8, OCTOBER=9, NOVEMBER=10, DECEMBER=11;
       bool after(Calendar when) const;
       bool before(Calendar when) const;
       int compareTo(Calendar anotherCalendar) const;

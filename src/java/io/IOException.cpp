@@ -2,14 +2,7 @@
 
 namespace bestofjava {
 
-   IOException::IOException(const std::string& message) : myMessage(message) {
+   IOException::IOException(const std::string& message) : std::runtime_error(message) {
    }
 
-   IOException::~IOException() {
-   }
-
-   const char* IOException::what() const noexcept {
-      return myMessage.c_str();
-   }
-
-} //namespace
+} // namespace bestofjava

@@ -14,56 +14,46 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 #include "File.hpp"
-#include <sys/stat.h>
-#include <unistd.h>
+#include <chrono>
+#include <cstdint>
+#include <system_error>
 #include <string>
 
 namespace bestofjava {
 
 #if defined(_WIN32) || defined(_WIN64) || defined(__WIN32__)
-   const std::string File::separator("\\"); //will this work for msdos and others? maybe not....
+   constexpr std::string File::separator("\\"); //will this work for msdos and others? maybe not....
 #else
-   const std::string File::separator("/");
+   constexpr std::string File::separator("/");
 #endif
 
 
-   File::File(const std::string& pathname) : myPathName(pathname) {
+   File::File(std::string pathname) : myPathName(std::move(pathname)) {
    }
 
-   File::~File() {
+   [[nodiscard]] bool File::exists() const noexcept {
+      return std::filesystem::exists(myPathName);
    }
 
-   bool File::exists() const {
-      struct stat filestat;
-      if (stat(myPathName.c_str(), &filestat )) return false; //error during stat
-      return true;
+   [[nodiscard]] std::string File::getAbsolutePath() const {
+        return std::filesystem::absolute(myPathName).string();
+    }
+
+   [[nodiscard]] std::string File::getName() const {
+      return myPathName.filename().string();
    }
 
-   std::string File::getAbsolutePath() const {
-      if (myPathName.at(0) == '/') return myPathName;
-      return std::string(getcwd(nullptr,0)).append("/").append(myPathName);
-   }
-   
-   std::string File::getName() const {
-      size_t lastSlash = myPathName.find_last_of('/');
-      if (lastSlash == std::string::npos) return myPathName;
-      return myPathName.substr(lastSlash + 1);
+   [[nodiscard]] std::string File::getParent() const {
+      if (auto parent = myPathName.parent_path(); !parent.empty()) {
+         return parent.string();
+      }
+      return {}; // return empty if no parent exists
    }
 
-   std::string File::getParent() const {
-      size_t lastSlash = myPathName.find_last_of('/');
-      if (lastSlash != std::string::npos) 
-         return myPathName.substr(0,lastSlash);
-      return std::string(getcwd(nullptr,0));
+   [[nodiscard]] bool File::isDirectory() const noexcept {
+        return std::filesystem::is_directory(myPathName);
+    }
 
-   }
-
-   bool File::isDirectory() const {
-      struct stat filestat;
-      if (stat(myPathName.c_str(), &filestat )) return false; //error during stat
-      if (S_ISDIR( filestat.st_mode )) return true;
-      return false;
-   }
 
 
    /**
@@ -74,19 +64,30 @@ namespace bestofjava {
     *       since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if
     *       an I/O error occurs
     */
-   uint64_t File::lastModified() {
-#ifdef __USE_LARGEFILE64
-      struct stat64 attrib;			// create a file attribute structure
-      if (stat64(myPathName.c_str(), &attrib) == 0) {		// get the attributes of myPathName
-#else
-      struct stat attrib;			// create a file attribute structure
-      if (stat(myPathName.c_str(), &attrib) == 0) {		// get the attributes of myPathName
-#endif
-         return static_cast<uint64_t>(attrib.st_mtime) * 1000U;
-      } else  {
-            perror(std::string("error in File::lastModified() while trying to stat ").append(myPathName).c_str());
-            return 0;
-         }
-    }
+   [[nodiscard]] uint64_t File::lastModified() const noexcept {
+      std::error_code ec;  // don’t throw on error
+      auto ftime = std::filesystem::last_write_time(myPathName, ec);
+
+      if (ec) {
+/*
+         std::cerr << "error in File::lastModified() while accessing "
+                   << myPathName << ": " << ec.message() << '\n';
+*/
+         return 0;
+      }
+
+      // Convert filesystem time_point → system_clock → ms since epoch
+      auto sctp = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
+         ftime - decltype(ftime)::clock::now() + std::chrono::system_clock::now()
+         );
+
+      auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+         sctp.time_since_epoch()
+         ).count();
+
+      return static_cast<uint64_t>(ms + 1);
+   }
+
+
 
 } // namespace bestofjava

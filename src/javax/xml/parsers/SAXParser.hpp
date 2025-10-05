@@ -38,7 +38,7 @@ namespace bestofjava {
       SAXParser(); 
       SAXParser(const SAXParser&);
       SAXParser& operator=(const SAXParser&);
-      ~SAXParser();
+      ~SAXParser() = default;
       void parse(const File&,  DefaultHandler*); //throws IOException, SAXException
       
    private:

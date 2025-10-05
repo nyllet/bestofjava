@@ -1,21 +1,18 @@
 #ifndef SAX_EXCEPTION
 #define SAX_EXCEPTION
 
-#include <exception>
+#include <stdexcept>
 #include <string>
 
 namespace bestofjava {
 
-   class SAXException : public std::exception {
+   class SAXException : public std::runtime_error {
    public:
       explicit SAXException(const std::string& message);
-      ~SAXException();
-      const char* what() const noexcept;
-   private:
-      std::string myMessage;
+      ~SAXException() = default;
    };
 
 
-} //namespace
+} // namespace bestofjava
 
 #endif

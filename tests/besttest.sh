@@ -23,7 +23,11 @@ javaLogFile="${logdir}/javatest.txt"
 java -classpath $logdir SimpleTester $xmlFile > $javaLogFile &
 
 if [ "$hasValgrind" = true ] ; then
-    valgrind ./simple_tester $xmlFile > $cppLogFile 2> "${logdir}/valgrind.txt"
+    valgrind --leak-check=full --show-leak-kinds=all ./simple_tester $xmlFile > $cppLogFile 2> "${logdir}/valgrind.txt"
+    if [ "$?" -ne 0 ]; then
+        echo "valgrind reports errors"
+        return_value=2
+    fi
 else
     ./simple_tester $xmlFile > $cppLogFile
 fi
@@ -33,21 +37,6 @@ do
   echo "waiting for tests to finalize. stay tuned"
   sleep 1
 done
-
-if [ "$hasValgrind" = true ] ; then
-    leaks=`grep 'All heap blocks were freed -- no leaks are possible' ${logdir}/valgrind.txt | wc -l`
-
-    if [ "$leaks" -eq 0 ]; then
-        echo "you have memory leaks!"
-        return_value=3
-    fi
-
-    valgrindErrors=`grep 'ERROR SUMMARY: 0 errors from 0 contexts' ${logdir}/valgrind.txt | wc -l`
-    if [ "$valgrindErrors" -eq 0 ]; then
-        echo "valgrind reports errors"
-        return_value=2
-    fi
-fi
 
 my_diff=`diff $cppLogFile $javaLogFile`
 if [ "$?" -ne 0 ]; then

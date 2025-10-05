@@ -20,23 +20,43 @@
 
 namespace bestofjava {
 
-   Attributes::Attributes(const XML_Char ** atts) :  myAtts(atts) {
-      
+   Attributes::Attributes(const XML_Char ** atts) : myAtts() {
+      if (!atts) {
+         return;
+      }
+      for (const XML_Char** p = atts; *p != nullptr && *(p + 1) != nullptr; p += 2) {
+         myAtts.emplace_back(*p, *(p + 1));  // name/value pair
+      }
    }
    
-   std::string Attributes::getQName(int i) const {
-      for(int j=0; j <= i && myAtts[j] != nullptr; j++)
-         if (j==i) return myAtts[j];
-      return "";
+   [[nodiscard]] std::size_t Attributes::getLength() const noexcept {
+      return myAtts.size();
    }
 
-
+   [[nodiscard]] const std::string& Attributes::getQName(std::size_t i) const {
+      if (i >= myAtts.size()) {
+         static const std::string empty;
+         return empty;
+      }
+      return myAtts[i].first;
+   }
    
-   int Attributes::getLength() const {
-      int i=0;
-      while(myAtts[i] != nullptr)
-         i++;
-      return i;
+   [[nodiscard]] const std::string& Attributes::getValue(std::size_t i) const {
+      if (i >= myAtts.size()) {
+         static const std::string empty;
+         return empty;
+      }
+      return myAtts[i].second;
    }
+
+   [[nodiscard]] std::string Attributes::getValue(const std::string& qName) const {
+      for (const auto& [name, value] : myAtts) {
+         if (name == qName) {
+            return value;
+         }
+      }
+      return {};
+   }
+
 
 } // namespace bestofjava

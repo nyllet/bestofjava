@@ -59,7 +59,7 @@ void SimpleTester::endElement(const std::string&    uri,
                               const std::string&   qName) {
    if (!uri.empty()) std::cout << "uri: " << uri << " ";
    if (!localName.empty()) std::cout << "localName: " << localName << " ";
-   if (!temp.empty()) std::cout << "characters: " << temp;
+   if (!temp.empty()) std::cout << "characters: " << temp << '\n';
    std::cout << "</" << qName << ">" << std::endl;
 }
 

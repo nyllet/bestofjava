@@ -1,20 +1,16 @@
 #ifndef IO_EXCEPTION
 #define IO_EXCEPTION
 
-#include <exception>
+#include <stdexcept>
 #include <string>
 
 namespace bestofjava {
 
-   class IOException : public std::exception {
+   class IOException : public std::runtime_error {
    public:
       explicit IOException(const std::string& message);
-      ~IOException();
-      const char* what() const noexcept;
-   private:
-      std::string myMessage;
+      ~IOException() = default;
    };
-
 
 } //namespace
 
